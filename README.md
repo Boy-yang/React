@@ -1,2 +1,1 @@
-# React
-前端react
+利用webpack手动搭建react开发环境：支持sass，热更新，动态加载组件
