@@ -1,2 +1,4 @@
-import base from './base';
-export {base}
+import config from './config';
+export {
+    config,
+}

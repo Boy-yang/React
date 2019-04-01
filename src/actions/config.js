@@ -21,21 +21,18 @@ function receiveUserInfo( json ) {
 }
 
 export function goToRegister( params ) {//注册请求
-    console.log(params)
     return dispatch => {
         XHR( {
             type: 'post',
             url: '/api/user/register',
             data: params,
             success: res => {
-                console.log(res)
                 dispatch( receiveRegister( res ) )
             }
         } )
     }
 }
 function receiveRegister( json ) {
-    console.log(json)
     return {
         type: GET_REGISTER_RESINFO,
         json,
