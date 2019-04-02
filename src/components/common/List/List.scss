@@ -1,0 +1,21 @@
+.List {
+    .List-item {
+		padding: 1rem;
+		overflow: hidden;
+        .List-left {
+			float: left;
+			width:50%;
+			height:7rem;
+        }
+
+        .List-right {
+			float: right;
+			width:50%;
+			height:7rem;
+			padding-left:1rem;
+			p{
+				margin: .5rem 0;
+			}
+        }
+    }
+}

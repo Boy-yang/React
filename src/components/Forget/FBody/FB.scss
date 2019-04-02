@@ -1,0 +1,110 @@
+.FB {
+  font-size: .42rem;
+  height: 100vh;
+  position: relative;
+
+  .FB-step {
+    padding: 0 .66rem;
+    color: #666;
+  }
+
+  .FB-nav {
+    overflow: hidden;
+    padding: 0 .66rem;
+    background-color: #fff;
+
+    li {
+      width: 33%;
+      float: left;
+      padding-right: .4rem;
+      position: relative;
+
+      i {
+        font-size: .6rem;
+        position: absolute;
+        right: .7rem;
+        top: .2rem;
+      }
+    }
+  }
+
+  .FB-ipt {
+    font-size: .4rem;
+
+    .FB-import {
+      border-top: .02rem solid #b1b0b0;
+      border-bottom: .02rem solid #b1b0b0;
+      background-color: #fff;
+      margin-top: -0.02rem;
+      position: relative;
+      padding: 0 .66rem;
+      overflow: hidden;
+
+      img {
+        width: 2.4rem;
+        height: 1rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      input {
+        width: 100%;
+        border: none;
+        outline: 0;
+      }
+    }
+
+    .FB-step1 {
+      .FB-jump {
+        float: right;
+        font-size: .4rem;
+        color: #000;
+        padding: 0 .66rem;
+      }
+    }
+
+    i {
+      font-style: normal;
+      line-height: 100%;
+      font-size: .24rem;
+    }
+
+    .FB-step2,.FB-step3{
+      display: none !important;
+    }
+    .FB-mode {
+      float: left;
+    }
+    .FB-choice {
+      float: right;
+      color: #c2c2c2;
+      font-size: .38rem;
+    }
+
+    .FB-info {
+      visibility: hidden;
+      font-size: .35rem;
+      padding: 0 .66rem;
+    }
+
+    .FB-sub {
+      margin: 0 .66rem;
+      color: #fff;
+      font-size: .4rem;
+      text-align: center;
+      border-radius: .2rem;
+      background-color: #f92438;
+    }
+  }
+
+  .FB-call {
+    width: 100%;
+    text-align: center;
+    font-size: .4rem;
+    color: #666;
+    clear: right;
+    position: absolute;
+    bottom: 4rem;
+  }
+}

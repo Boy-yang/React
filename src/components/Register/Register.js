@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {Link} from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Form, Input, Button, Checkbox } from "antd";
-import { getUserInfo, goToRegister } from "../../actions";
+import { goToRegister } from "../../actions";
 
 import "./Register.scss";
 @connect( state => ( {
-  userInfo: state.config.userInfo,
-  registerResInfo: state.config.registerResInfo
+  registerInfo: state.config.registerInfo
 } ), {
-    getUserInfo,
     goToRegister
   }
 )
@@ -23,6 +21,7 @@ class Register extends Component {
         repassword: null,//重复密码
         identifyCode: null,//验证码
       },
+      show: false,
       IcodeBtnText: '获取验证码',
       loading: false,
       warnInfo: ''
@@ -33,21 +32,21 @@ class Register extends Component {
     const { phoneNumber, password, repassword } = this.state.query;
     let data = {};
     //手机号/密码验证
-    const TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-    const PWD_REGEXP = /^([0-9a-zA-Z]{8,16})$/;
+    const TEL_registerEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+    const PWD_registerEXP = /^([0-9a-zA-Z]{8,16})$/;
     if ( !phoneNumber ) {
       this.setState( {
         warnInfo: '手机号不能为空'
       } );
       return;
-    } else if ( TEL_REGEXP.test( phoneNumber ) ) {
+    } else if ( TEL_registerEXP.test( phoneNumber ) ) {
       // 密码验证8-16位数字+字母组合
       if ( !password ) {
         this.setState( {
           warnInfo: '密码不能为空'
         } );
         return;
-      } else if ( PWD_REGEXP.test( password ) ) {
+      } else if ( PWD_registerEXP.test( password ) ) {
         if ( password !== repassword ) {
           this.setState( {
             warnInfo: '两次输入的密码不一致'
@@ -73,7 +72,7 @@ class Register extends Component {
     }
     this.setState( {
       loading: true,
-    }, () => this.props.goToRegister( data ) );
+    }, () => this.props.goToregisterister( data ) );
   }
 
   handleValueChange( e, type ) {
@@ -95,16 +94,66 @@ class Register extends Component {
   //     console.log( 'success' );
   //   } )
   // }
+  showNav() {
+    const {show}=this.state;
+    if(!show){
+      this.setState({
+        show:true
+      })
+    }else{
+      this.setState({
+        show:false
+      })
+    }  
+  }
 
   render() {
     const { phoneNumber, password, repassword } = this.state.query;
-    const { loading, warnInfo } = this.state;
-    const { registerResInfo } = this.props;
+    const { loading, warnInfo, show } = this.state;
+    const { registerInfo } = this.props;
+
     return (
       <div className="register">
+        <div className="register-head">
+          <a href="javascript:history.go(-1);" className="register-back">
+            <i className="fa fa-chevron-left" />
+          </a>
+          <div className="register-cont">
+            <h2>注册</h2>
+            <div className="register-more">
+              <a className="register-dropdown-toggle" onClick={ () => this.showNav() }>
+                <i className="fa fa-ellipsis-h" aria-hidden="true" />
+              </a>
+              {
+                show &&
+                <ul className="register-dropdown-content">
+                  <i className="register-arrow" />
+                  <li>
+                    <NavLink to='/home'>
+                      <i className="fa fa-home" aria-hidden="true" />
+                      <b>首页</b>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to='/shop'>
+                      <i className="fa fa-cart-arrow-down" aria-hidden="true" />
+                      <b>购物</b>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to='/user'>
+                      <i className="fa fa-user-md" aria-hidden="true" />
+                      <b>用户中心</b>
+                    </NavLink>
+                  </li>
+                </ul>
+              }
+            </div>
+          </div>
+        </div>
         <Form className="register-form" autoComplete='off'>
-          <span style={ { color: "red" } }>{ registerResInfo.msg || warnInfo }</span>
-          { registerResInfo.code  && <Link href='/' style={ { marginLeft: '1rem' } }>去登陆</Link> }
+          {/* <span style={ { color: "red" } }>{ registerInfo.msg || warnInfo }</span> */ }
+          {/* { registerInfo.code && <Link to='/' style={ { marginLeft: '1rem' } }>去登陆</Link> } */ }
           <Form.Item label="PhoneNumber">
             <Input
               type="phoneNumber"
@@ -159,11 +208,12 @@ class Register extends Component {
             <Button
               type="primary"
               className="register-form-button"
-              loading={ registerResInfo.code ? false : loading }
+              // loading={ registerInfo.code ? false : loading }
               onClick={ () => this.goRegister() }
             >
               注册
             </Button>
+            <Link to='/login' style={ { color: 'red' } }>已有账号,去登录&gt;</Link>
           </Form.Item>
         </Form>
       </div>

@@ -1,14 +1,127 @@
+.login {
+    width: 100%;
 
-.login{
-  width: 100%;
-  .login-form {
+    .login-header {
+        overflow: hidden;
+        height: 1.32rem;
+        padding: 0 1.7rem;
+        background-color: #fafafa;
+
+        .login-back {
+            display: block;
+            width: 1.7rem;
+            height: 1.32rem;
+            position: absolute;
+            left: 0;
+            top: 0;
+            text-align: center;
+            color: #f41e33;
+
+            i {
+                line-height: 1.32rem;
+                font-size: .7rem;
+            }
+        }
+
+        .login-cont {
+            .login-h2 {
+                height: 1.32rem;
+                line-height: 1.32rem;
+                font-size: .6rem;
+                font-weight: normal;
+                color: #262626;
+                text-align: center;
+            }
+        }
+    }
+
+    .login-form {
+        margin: 2rem auto;
+        width: 80%;
+    }
+
+    .login-form-forgot {
+        float: right;
+    }
+
+    .login-form-button {
+        width: 100%;
+    }
+
+    .login-other {
+        padding: 0 .66rem;
+        overflow: hidden;
+        margin-top: 1rem;
+
+        p {
+            font-size: .36rem;
+            color: #c9c9c9;
+            text-align: center;
+        }
+
+        .login-method {
+            width: 7rem;
+            overflow: hidden;
+            margin: 1rem auto;
+
+            a {
+                float: left;
+                width: 1.26rem;
+                height: 1.26rem;
+                margin-left: 1.5rem;
+            }
+
+            .login-xl {
+                background: url(//static.winxuancdn.com/topic/subject/201702/xl.png) no-repeat;
+                background-size: contain;
+            }
+
+            .login-qq {
+                background: url(//static.winxuancdn.com/topic/subject/201702/qq.png) no-repeat;
+                background-size: contain;
+            }
+        }
+    }
+
+    .login-service-tip {
+        width: 100%;
+        margin-top: 2rem;
+        overflow: hidden;
+        padding-bottom: .8rem;
+
+        .login-item {
+            width: 33.3333%;
+            float: left;
+            text-align: center;
+
+            i {
+                display: block;
+                font-size: 1.66rem;
+                color: #c9c9c9;
+                margin-bottom: .2rem;
+            }
+
+            b {
+                display: block;
+                font-weight: normal;
+                font-size: .36rem;
+                color: #c9c9c9;
+                line-height: .82rem;
+            }
+        }
+    }
+}
+
+
+.login-form {
     margin: 3.125rem auto;
     max-width: 18.75rem;
-  }
 }
+
 .login-form-forgot {
-  float: right;
+    float: right;
 }
+
 .login-form-button {
-  width: 100%;
+    width: 100%;
 }

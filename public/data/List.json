@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "imgSrc":"//img3.winxuancdn.com/3347/1201713347_49.jpg?1538298144625&imageMogr2/thumbnail/200x200",
+    "name": "延禧攻略",
+    "author": "周末",
+    "priceN": "￥59.0",
+    "priceO": "￥88.00",
+    "pub": "九州出版社",
+    "zq": "6.7折"
+  },
+  {
+    "id": 2,
+    "imgSrc":"//img1.winxuancdn.com/7193/1201727193_0_1.jpg?1535353851455&imageMogr2/thumbnail/200x200",
+    "name": "丫丫的国学之旅•胡须爷爷讲论语+虫虫园丁说庄子+蟋蟀歌手读诗经",
+    "author": "明霞 著 子衿 绘",
+    "priceN": "￥69.0",
+    "priceO": "￥80.00",
+    "pub": "九州出版社",
+    "zq": "6.7折"
+  },
+  {
+    "id": 3,
+    "imgSrc":"//img3.winxuancdn.com/3347/1201713347_49.jpg?1538298144625&imageMogr2/thumbnail/200x200",
+    "name": "延禧攻略",
+    "author": "周末",
+    "priceN": "￥59.0",
+    "priceO": "￥88.00",
+    "pub": "九州出版社",
+    "zq": "6.7折"
+  },
+  {
+    "id": 4,
+    "imgSrc":"//img1.winxuancdn.com/7193/1201727193_0_1.jpg?1535353851455&imageMogr2/thumbnail/200x200",
+    "name": "丫丫的国学之旅•胡须爷爷讲论语+虫虫园丁说庄子+蟋蟀歌手读诗经",
+    "author": "明霞 著 子衿 绘",
+    "priceN": "￥69.0",
+    "priceO": "￥80.00",
+    "pub": "九州出版社",
+    "zq": "6.7折"
+  }
+]

@@ -1,0 +1,122 @@
+.DH{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 201;
+  box-shadow: 0 0.036rem 0.036rem rgba(0,0,0,0.07);
+  .DH-box{
+    position: relative;
+    height: 1.32rem;
+    padding: 0 1.7rem;
+    background-color: #fafafa;
+    a.DH-back{
+      display: block;
+      width: 1.7rem;
+      height: 1.32rem;
+      position: absolute;
+      left: 0;
+      top: 0;
+      text-align: center;
+      color: #f41e33;
+      i{
+        line-height: 1.32rem;
+        font-size: .7rem;
+      }
+    }
+    ul{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      margin: 0 1.7rem;
+      z-index: 202;
+      li{
+        float: left;
+        height: 1.32rem;
+        width: 3rem;
+        text-align: center;
+        a{
+          display: block;
+          font-size: .4rem;
+          line-height: 1.27rem;
+          color: #262626;
+          border-bottom: .05rem solid transparent;
+        }
+      }
+      li.Dh-active{
+        a{
+          background-color: #fff;
+          color: #f41e33;
+          border-bottom-color: #f41e33;
+        }
+      }
+    }
+    .DH-more{
+      display: block;
+      width: 1.9rem;
+      height: 1.32rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-align: center;
+      color: #999;
+      a{
+        display: block;
+        color: #999;
+        i{
+          line-height: 1.32rem;
+          font-size: .7rem;
+        }
+      }
+      .DH-nav-sub{
+        position: absolute;
+        top: 100%;
+        right: .32rem;
+        z-index: 200;
+        display: none;
+        width: 3.64rem;
+        margin-top: .3rem;
+        background-color: rgba(0,0,0,0.8);
+        border-radius: .12rem;
+        background-clip: padding-box;
+        animation-duration: .15s;
+        .DH-arrow{
+          display: block;
+          position: absolute;
+          right: .5rem;
+          top: -0.12rem;
+          width: 0;
+          font-size: 0;
+          border-width: 0 .14rem .14rem .14rem;
+          border-style: solid;
+          border-color: transparent transparent rgba(0,0,0,0.8) transparent;
+        }
+        li{
+          height: 1.4rem;
+          line-height: 1.4rem;
+          border-bottom: .036rem solid rgba(77,77,77,0.8);
+          font-size: .4rem;
+          margin: 0 .3rem;
+          text-align: left;
+          a{
+            display: block;
+            color: #fff;
+          }
+          s{
+            line-height: 1.4rem;
+            text-decoration: none;
+            font-size: .52rem;
+            margin: 0 .32rem 0 .2rem;
+            color: #777;
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+        li:last-child{
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

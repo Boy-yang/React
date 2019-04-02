@@ -1,20 +1,18 @@
-import { GET_USER_INFO,GET_LOGIN_RESINFO,GET_REGISTER_RESINFO } from '../constants';
+import { GET_LIST_DATA,GET_LOGIN_RESINFO,GET_REGISTER_RESINFO } from '../constants';
 import { XHR } from '../utils';
-export function getUserInfo( params ) {//获取用户信息
+export function getListData() {//获取列表数据
     return dispatch => {
         XHR( {
-            type:'post',
-            url:'/api/user/userInfo',
-            data: params,
-            success: data => {
-                dispatch( receiveUserInfo( data ) )
+            url:'/api/user/listdata',
+            success: res => {
+                dispatch( receiveListData( res ) )
             }
         } )
     }
 }
-function receiveUserInfo( json ) {
+function receiveListData( json ) {
     return {
-        type: GET_USER_INFO,
+        type: GET_LIST_DATA,
         json,
         receiveAt: Date.now(),
     }
@@ -27,12 +25,14 @@ export function goToRegister( params ) {//注册请求
             url: '/api/user/register',
             data: params,
             success: res => {
+               
                 dispatch( receiveRegister( res ) )
             }
         } )
     }
 }
 function receiveRegister( json ) {
+
     return {
         type: GET_REGISTER_RESINFO,
         json,
