@@ -1,7 +1,6 @@
-.register {
-    width: 100%;
+.forget {
 
-    .register-head {
+    .forget-head {
         position: relative;
         height: 1.32rem;
         padding: 0 1.7rem;
@@ -11,7 +10,7 @@
             outline: 0;
         }
 
-        .register-back {
+        .forget-back {
             display: block;
             width: 1.7rem;
             height: 1.32rem;
@@ -27,7 +26,7 @@
             }
         }
 
-        .register-cont {
+        .forget-cont {
             h2 {
                 line-height: 1.32rem;
                 font-size: .6rem;
@@ -36,7 +35,7 @@
                 font-weight: normal;
             }
 
-            .register-more {
+            .forget-more {
                 display: block;
                 width: 1.9rem;
                 height: 1.32rem;
@@ -46,13 +45,13 @@
                 text-align: center;
                 color: #999;
 
-                .register-dropdown-toggle {
+                .forget-dropdown-toggle {
                     display: block;
                     font-size: .8rem;
                     color: #999;
                 }
 
-                .register-dropdown-content {
+                .forget-dropdown-content {
                     position: absolute;
                     top: 100%;
                     right: .32rem;
@@ -64,7 +63,7 @@
                     border-radius: .12rem;
                     animation-duration: .15s;
 
-                    .register-arrow {
+                    .forget-arrow {
                         display: block;
                         position: absolute;
                         right: .5rem;
@@ -77,8 +76,8 @@
                     }
 
                     li {
-						height: 1.23rem;
-						line-height: 1.23rem;
+                        height: 1.23rem;
+                        line-height: 1.23rem;
                         border-bottom: .036rem solid rgba(77, 77, 77, 0.8);
                         font-size: .4rem;
                         text-align: left;
@@ -112,21 +111,49 @@
         }
     }
 
+    .forget-form {
+        background: #fff;
+        padding: 1rem;
 
-    .register-form {
-        margin: 2rem auto;
-        width: 80%;
+        ul {
+            display: flex;
+            justify-content: space-around;
+
+            li {
+                margin:1rem 0;
+            }
+        }
+
+        .identifyCode {
+            position: relative;
+            margin: 1rem 0;
+
+            .identifyCode-btn {
+                position: absolute;
+                top: .25rem;
+                right: .1rem;
+                z-index: 2;
+            }
+        }
+        .next{
+            width: 100%;
+        }
+        .reset-password{
+            margin: 1rem 0;
+        }
     }
 
-    .register-form-button {
+    .forget-call {
         width: 100%;
+        text-align: center;
+        font-size: .4rem;
+        color: #666;
+        clear: right;
+        position: absolute;
+        bottom: 4rem;
     }
 
-    .IdentifyCode-btn {
-        position: relative;
-        bottom: 2.35rem;
-        left: 13.2rem;
-    }
 
-    
+
+
 }

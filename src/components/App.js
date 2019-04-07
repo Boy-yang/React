@@ -22,7 +22,6 @@ class App extends Component {
         {
           [
             { path: "/", component: props => <Home { ...props } /> },
-            { path: "/home", component: props => <Home { ...props } /> },
             { path: "/shop", component: props => <Shop { ...props } /> },
             { path: "/user", component: props => <User { ...props } /> },
             { path: "/detail/:id", component: props => <Detail { ...props } /> },

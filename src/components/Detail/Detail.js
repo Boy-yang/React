@@ -1,74 +1,84 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import DH from './DHead/DH'
-import DF from './DFoot/DF'
+import React, { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { connect } from "react-redux";
+import { Tabs } from 'antd';
+import { getListData } from "../../actions/index";
+
+const TabPane = Tabs.TabPane;
 
 import './Detail.scss'
 
-export default class Detail extends Component {
-    constructor(props) {
-        super(props);
+@connect( state => ( {
+    listData: state.config.listData
+} ), {
+        getListData
+    }
+)
+class Detail extends Component {
+    constructor ( props ) {
+        super( props );
         this.state = {
-            detailData: []
+            id: this.props.match.params.id - 1,
+            detailData: {
+
+            }
         }
     }
+    componentDidMount() {
+        this.props.getListData();
 
-    componentWillMount() {
-        fetch(`../data/List.json`,
-            {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}})
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                const _id = this.props.match.params.id - 1;
-                this.setState({detailData: data[_id]})
-            });
+    }
+
+    static getDerivedStateFromProps( nextProps, prevState ) {
+        const { listData } = nextProps;
+        const { id } = prevState;
+        if ( listData.length !== 0 ) {
+            prevState.detailData = listData[ id ];
+        }
+        return null;
     }
 
     render() {
-        let {detailData} = this.state;
-        // console.log(detailData);
+        const { detailData } = this.state;
         return (
-            <div className="Detail">
-                <DH/>
-                <div className="DB">
-                    <dl>
-                        <dt>
-                            <img
-                                src={detailData.imgSrc}
-                                alt=""/>
-                        </dt>
-                        <dd className="DB-title">
-                            <h2 className='tit-h2'>{detailData.name}</h2>
-                            <h3/>
-                        </dd>
-                        <dd className='DB-price'>
-                            <span className="price-n"><b>{detailData.priceN}</b></span>
-                            <span className="price-o">{detailData.priceO}</span>
-                            <span className="zq">{detailData.zq}</span>
-                            <i className="fa fa-share-alt-square" aria-hidden="true"/>
-                        </dd>
-                        <dd className='DB-author'>
-                            作 者：<b><a href="http://m.winxuan.com/search?author=%E5%91%A8%E6%9C%AB">{detailData.author}</a></b>
-                        </dd>
-                        <dd className='DB-pub'>
-                            出版社：<a href="#"><b>{detailData.pub}</b></a>
-                        </dd>
-                    </dl>
-                    <div className="DB-num">
-                        <b>数 量：</b>
-                        <button className='DB-btn-l'>
-                            <i className="fa fa-minus" aria-hidden="true"/>
-                        </button>
-                        <input type="number" className='DB-ipt' defaultValue='1'/>
-                        <button className='DB-btn-r'>
-                            <i className="fa fa-plus" aria-hidden="true"/>
-                        </button>
-                        <span className="DB-limit"><b>2049</b></span>
+            <div className='detail'>
+                <div className='detail-tags'>
+                    <Tabs
+                        defaultActiveKey="1"
+                        onChange={ () => { console.log( 'key' ) } }
+                        size="small"
+                    >
+                        <TabPane tab="Tab 1" key="1">
+                            <img src={ detailData.imgSrc } alt="" />
+                            <h2 className='tit-h2'>{ detailData.name }</h2>
+                            <span className="price">价格：<b>{ detailData.price }</b></span>
+                            <p>作 者:<b><a href="#">{ detailData.author }</a></b></p>
+                            <p>出版社：<a href="#"><b>{ detailData.publish }</b></a></p>
+                        </TabPane>
+                        <TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>
+                        <TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>
+                    </Tabs>
+                </div>
+                <div className='detail-footer'>
+                    <div className="detail-footer-box">
+                        <NavLink to='/' data-type="index" activeStyle={ { color: "red" } }>
+                            <i className="fa fa-home" aria-hidden="true" />
+                            <b>首页</b>
+                        </NavLink>
+                        <NavLink to='/user' activeStyle={ { color: "red" } }>
+                            <i className="fa fa-heart" aria-hidden="true"></i>
+                            <b>收藏</b>
+                        </NavLink>
+                        <NavLink to='/shop' activeStyle={ { color: "red" } }>
+                            <i className="fa fa-shopping-cart" aria-hidden="true" />
+                            <b>购物车</b>
+                        </NavLink>
+
                     </div>
                 </div>
-                <DF/>
             </div>
+
         );
     }
 }
+export default Detail;

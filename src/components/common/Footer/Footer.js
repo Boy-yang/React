@@ -5,7 +5,7 @@ import './Footer.scss'
 const Footer = ( props ) => (
     <div className='Footer'>
         <div className="Footer-box">
-            <NavLink to='/home' data-type="index" activeStyle={ { color: "red" } }>
+            <NavLink to='/' data-type="index" activeStyle={ { color: "red" } }>
                 <i className="fa fa-home" aria-hidden="true" />
                 <b>首页</b>
             </NavLink>

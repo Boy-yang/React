@@ -1,135 +1,46 @@
-.DB{
-  border-bottom: .036rem solid #eee;
-  background-color: #fff;
-  dl{
-    dt{
-      width: 100%;
-      border-bottom: .036rem solid #eee;
-      img{
-        display: inline;
-        width: auto;
-        height: 8.4rem;
-        margin-left:2rem;
-      }
+.detail {
+    display: flex;
+    justify-content: space-around;
+
+    .detail-tags {
+        width: 100%;
+        text-align: center;
+        overflow: hidden;
     }
-    dd.DB-title{
-      background-color: #fff;
-      padding: .22rem .68rem;
-      h2{
-        line-height: .64rem;
-        font-size: .44rem;
-        color: #262626;
-        margin-bottom: .1rem;
-      }
-      h3{
-        font-size: .36rem;
-        line-height: .48rem;
-        color: #f41e33;
-        margin-bottom: .2rem;
-      }
-    }
-    dd.DB-price{
-      padding:.22rem .68rem;
-      height: .72rem;
-      line-height: .72rem;
-      margin-bottom: .58rem;
-      .price-n{
-        margin-right: .56rem;
-        font-size: .4rem;
-        color: #f41e33;
-        b{
-          font-size: .66rem;
-          font-weight: normal;
+
+    .detail-footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1.44rem;
+        background-color: #f6f6f6;
+        border-top: .018rem solid #e7e7e7;
+        z-index: 200;
+        .detail-footer-box {
+            display: flex;
+            justify-content: space-around;
+            a {
+                height: 1.422rem;
+                color: #5c6467;
+                text-align: center;
+    
+                i {
+                    display: block;
+                    padding-top: .1rem;
+                    height: .8rem;
+                    line-height: .7rem;
+                    font-size: .7rem;
+                }
+    
+                b {
+                    display: block;
+                    height: .36rem;
+                    line-height: .6rem;
+                    font-size: .3rem;
+                    font-weight: normal;
+                }
+            }
         }
-      }
-      .price-o{
-        font-size: .36rem;
-        text-decoration: line-through;
-        color: #999;
-        margin-right: .52rem;
-      }
-      .zq{
-        display: inline-block;
-        height: .39rem;
-        line-height: .39rem;
-        font-size: .28rem;
-        padding: 0 .1rem;
-        color: #fff;
-        background-color: #fd5969;
-        vertical-align: middle;
-        border-radius: .08rem;
-        margin-top: .3rem;
-      }
-      i{
-        float: right;
-        font-size: 1rem;
-        color: #f41e33;
-      }
     }
-    dd.DB-author{
-      margin-left: 1rem;
-      line-height: .64rem;
-      font-size: .36rem;
-      color: #999;
-      a{
-        margin: 0 .11rem;
-        color:#1D66B2;
-      }
-    }
-    dd.DB-pub{
-      margin-left: 1rem;
-      line-height: .64rem;
-      font-size: .36rem;
-      color: #999;
-      a{
-        color: #6a77b6;
-        margin: 0 .11rem;
-      }
-    }
-  }
-  .DB-num{
-    margin: 0 .68rem;
-    b{
-      font-size: .5rem;
-      color: #999;
-      font-weight: normal;
-    }
-    button{
-      border: 0 none;
-      background-color: #eee;
-      width: .88rem;
-      height: .88rem;
-      line-height: .88rem;
-      font-size: .3rem;
-    }
-    .DB-btn-l{
-      border-top-left-radius: .1rem;
-      border-bottom-left-radius: .1rem;
-
-    }
-    .DB-ipt{
-      width: 1.05rem;
-      height: .88rem;
-      line-height: .88rem;
-      border: 0 none;
-      border-top: .018rem solid #eee;
-      border-bottom: .018rem solid #eee;
-      background-color: #fff;
-      border-radius: 0;
-      text-align: center;
-      font-size: .5rem;
-      margin: 0 .2rem;
-    }
-    .DB-btn-r{
-      border-top-right-radius: .1rem;
-      border-bottom-right-radius: .1rem;
-
-    }
-    .DB-limit{
-      display: none;
-      margin-left: .42rem;
-      font-size: .3rem;
-      color: #f41e33;
-    }
-  }
 }

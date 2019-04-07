@@ -19,7 +19,6 @@ class Register extends Component {
         phoneNumber: null,//用户名
         password: null,//密码
         repassword: null,//重复密码
-        identifyCode: null,//验证码
       },
       show: false,
       IcodeBtnText: '获取验证码',
@@ -32,21 +31,21 @@ class Register extends Component {
     const { phoneNumber, password, repassword } = this.state.query;
     let data = {};
     //手机号/密码验证
-    const TEL_registerEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
-    const PWD_registerEXP = /^([0-9a-zA-Z]{8,16})$/;
+    const TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+    const PWD_REGEXP = /^([0-9a-zA-Z]{8,16})$/;
     if ( !phoneNumber ) {
       this.setState( {
         warnInfo: '手机号不能为空'
       } );
       return;
-    } else if ( TEL_registerEXP.test( phoneNumber ) ) {
+    } else if ( TEL_REGEXP.test( phoneNumber ) ) {
       // 密码验证8-16位数字+字母组合
       if ( !password ) {
         this.setState( {
           warnInfo: '密码不能为空'
         } );
         return;
-      } else if ( PWD_registerEXP.test( password ) ) {
+      } else if ( PWD_REGEXP.test( password ) ) {
         if ( password !== repassword ) {
           this.setState( {
             warnInfo: '两次输入的密码不一致'
@@ -72,7 +71,7 @@ class Register extends Component {
     }
     this.setState( {
       loading: true,
-    }, () => this.props.goToregisterister( data ) );
+    }, () => this.props.goToRegister( data ) );
   }
 
   handleValueChange( e, type ) {
@@ -88,23 +87,17 @@ class Register extends Component {
     }
   }
 
-  // getIdentifyCode() {
-  //   const { phoneNumber } = this.state.query;
-  //   this.props.getCaptcha( phoneNumber, function () {
-  //     console.log( 'success' );
-  //   } )
-  // }
   showNav() {
-    const {show}=this.state;
-    if(!show){
-      this.setState({
-        show:true
-      })
-    }else{
-      this.setState({
-        show:false
-      })
-    }  
+    const { show } = this.state;
+    if ( !show ) {
+      this.setState( {
+        show: true
+      } )
+    } else {
+      this.setState( {
+        show: false
+      } )
+    }
   }
 
   render() {
@@ -114,6 +107,7 @@ class Register extends Component {
 
     return (
       <div className="register">
+        {/* register header */ }
         <div className="register-head">
           <a href="javascript:history.go(-1);" className="register-back">
             <i className="fa fa-chevron-left" />
@@ -151,9 +145,11 @@ class Register extends Component {
             </div>
           </div>
         </div>
+
+        {/* register form */ }
         <Form className="register-form" autoComplete='off'>
-          {/* <span style={ { color: "red" } }>{ registerInfo.msg || warnInfo }</span> */ }
-          {/* { registerInfo.code && <Link to='/' style={ { marginLeft: '1rem' } }>去登陆</Link> } */ }
+          {/* <span style={ { color: "red" } }>{ registerInfo.msg || warnInfo }</span> */}
+          {/* { registerInfo.code && <Link to='/' style={ { marginLeft: '1rem' } }>去登陆</Link> } */}
           <Form.Item label="PhoneNumber">
             <Input
               type="phoneNumber"
@@ -182,23 +178,6 @@ class Register extends Component {
               onKeyDown={ ( e ) => this.handleKeyDown( e.keyCode ) }
             />
           </Form.Item>
-          {/* <Form.Item label="IdentifyCode">
-            <Input
-              type="identifyCode"
-              placeholder='请输入验证码'
-              value={ identifyCode }
-              onChange={ ( e ) => this.handleValueChange( e, "identifyCode" ) }
-              onKeyDown={ ( e ) => this.handleKeyDown( e.keyCode ) }
-            />
-            <Button
-              className='IdentifyCode-btn'
-              type='primary'
-              size='small'
-              onClick={ () => this.getIdentifyCode() }
-            >
-              { IcodeBtnText }
-            </Button>
-          </Form.Item> */}
           <Form.Item>
             <Checkbox>
               I have read the <a href="#">agreement</a>
