@@ -1,16 +1,18 @@
-import React,{Component} from 'react';
-import { Link } from 'react-router-dom';
-import {Input} from 'antd';
-import './Header.scss'
+import React, { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { Input, Form } from 'antd';
+import './Header.scss';
+const FormItem = Form.Item;
 
-const Search=Input.Search;
+const Search = Input.Search;
 
 class Header extends Component {
-    constructor ( props ) {
-        super( props );
+    constructor(props) {
+        super(props);
     }
 
-    handleSearch(value){
+    
+    handleSearch(value) {
         console.log(value)
     }
 
@@ -19,10 +21,18 @@ class Header extends Component {
             <div className="header">
                 <div className='logo'>Blog</div>
                 <div className='nav'>
-                    <a href='javascript:;'>首页</a>
-                    <a href='javascript:;'>技术</a>
-                    <a href='javascript:;'>生活</a>
-                    <a href='javascript:;'>关于我</a>
+                    <NavLink exact to='/' activeClassName='active'>
+                        <i className="fa fa-home" aria-hidden="true" />
+                        <b>首页</b>
+                    </NavLink>
+                    <NavLink to='/life' activeClassName='active'>
+                        <i className="fa fa-coffee" aria-hidden="true"></i>
+                        <b>生活</b>
+                    </NavLink>
+                    <NavLink to='/user' activeClassName='active'>
+                        <i className="fa fa-male" aria-hidden="true"></i>
+                        <b>关于我</b>
+                    </NavLink>
                 </div>
                 <div className='search'>
                     <Search
@@ -31,11 +41,12 @@ class Header extends Component {
                         enterButton
                     />
                 </div>
-                <div className='write-login'>
-                    <a href='javascript:;'>写文章</a>
-                    &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <Link to='/login'>登陆</Link>
-                </div> 
+                <div className='write'>
+                    <Link to='/write'>
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <b>写文章</b>
+                    </Link>      
+                </div>
             </div>
         );
     }

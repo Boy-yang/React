@@ -4,11 +4,10 @@ import { Spin } from "antd";
 import { hot } from 'react-hot-loader/root'
 
 const Home = lazy( () => import( "./Home/Home.js" ) );
-const Shop = lazy( () => import( "./Shop/Shop.js" ) );
+const Life = lazy( () => import( "./Life/Life.js" ) );
 const User = lazy( () => import( "./User/User.js" ) );
-const Detail = lazy( () => import( "./Detail/Detail.js" ) );
-const Login = lazy( () => import( "./Login/Login.js" ) );
-const Register = lazy( () => import( "./Register/Register.js" ) );
+const Write = lazy( () => import( "./Write/Write.js" ) );
+const Article = lazy( () => import( "./Article/Article.js" ) );
 const Forget = lazy( () => import( "./Forget/Forget.js" ) );
 
 import "../style/reset.scss";
@@ -22,12 +21,11 @@ class App extends Component {
         {
           [
             { path: "/", component: props => <Home { ...props } /> },
-            { path: "/shop", component: props => <Shop { ...props } /> },
+            { path: "/life", component: props => <Life { ...props } /> },
             { path: "/user", component: props => <User { ...props } /> },
-            { path: "/detail/:id", component: props => <Detail { ...props } /> },
-            { path: "/forget", component: props => <Forget { ...props } /> },
-            { path: "/login", component: props => <Login { ...props } /> },
-            { path: "/register", component: props => <Register { ...props } /> },   
+            { path: "/write", component: props => <Write { ...props } /> },
+            { path: "/article/:id", component: props => <Article { ...props } /> },
+            { path: "/forget", component: props => <Forget { ...props } /> },  
           ].map( ( item, index ) => (
             <Route exact key={ index } { ...item } />
           ) )

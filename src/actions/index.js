@@ -1,11 +1,13 @@
 import {
-    getListData,
+    getKnowledgeInfo,
+    getArticleInfo,
     goToLogin,
     goToRegister
 } from './config';
 
 export {
-    getListData,
+    getKnowledgeInfo,
+    getArticleInfo,
     goToLogin,
     goToRegister
 }

@@ -1,20 +1,25 @@
-import { GET_LIST_DATA, GET_REGISTER_RESINFO,GET_LOGIN_RESINFO } from '../constants'
+import { GET_KNOWLEDGE_INFO,GET_ARTICLE_INFO, GET_REGISTER_RESINFO,GET_LOGIN_RESINFO } from '../constants'
 
 let initialState = {
-    listData:[],
+    knowledgeInfo:[],
+    articleInfo:[],
     registerResInfo: {},
     loginResInfo: {},
 };
 export default function update( state = initialState, action ) {
     switch ( action.type ) {
-        case GET_LIST_DATA:
+        case GET_KNOWLEDGE_INFO:
             return Object.assign( {}, state, {
-                listData: action.json,
+                knowledgeInfo: action.json,
             } );
         //或者
         // return {
         //     listData: {...action.json}
         // };
+        case GET_ARTICLE_INFO:
+            return Object.assign( {}, state, {
+                articleInfo: action.json,
+            } );
         case GET_REGISTER_RESINFO:
             return Object.assign( {}, state, {
                 registerResInfo: action.json,

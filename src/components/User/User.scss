@@ -1,0 +1,101 @@
+.user{
+    width: 100%;
+    min-height: 60rem;
+    background: #f6f6f6;
+    padding: .5rem 2rem 0 2rem;
+    .introduce{
+        width: 100%;
+        background: #fff;
+        padding: .5rem;
+        height: 5rem;
+        border-radius: 1rem;
+        line-height: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        img{
+            width: 4rem;
+            height: 4rem;
+            border-radius: 2rem;
+        }
+        .watch{
+            display: inline-block;
+            width: 2.5rem;
+            height: 1rem;
+            line-height: 1rem;
+            text-align: center;
+            color: #fff;
+            border-radius: .2rem;
+            background: #1890ff;
+        }
+    }
+    .education{
+        width: 100%;
+        background: #fff;
+        padding: .5rem;
+        height: 6rem;
+        line-height: 1rem;
+        margin-bottom: 1rem;
+        h3{
+            i{
+                margin-right: .2rem;
+            }
+        }
+        p{
+            display: flex;
+            justify-content: space-between;
+            margin-left: 1rem;
+            span{
+                width: 14rem;
+            }
+        }
+    }
+    .honor{
+        width: 100%;
+        background: #fff;
+        padding: .5rem;
+        height: 14rem;
+        margin-bottom: 1rem;
+        line-height: 1rem;
+        h3{
+            i{
+                margin-right: .2rem;
+            }
+        }
+        p{
+            display: flex;
+            justify-content: space-between;
+            margin-left: 1rem;
+            span{
+                width: 14rem;
+            }
+        }
+    }
+    .work{
+        width: 100%;
+        background: #fff;
+        padding: .5rem;
+        height: 6rem;
+        margin-bottom: 1rem;
+        line-height: 1rem;
+        h3{
+            i{
+                margin-right: .2rem;
+            }
+        }
+    }
+    .hobbies{
+        width: 100%;
+        background: #fff;
+        padding: .5rem;
+        height: 6rem;
+        margin-bottom: 1rem;
+        line-height: 1rem;
+        h3{
+            i{
+                margin-right: .2rem;
+            }
+        }
+
+    }
+}

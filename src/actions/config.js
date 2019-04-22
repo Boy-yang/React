@@ -1,24 +1,53 @@
-import { GET_LIST_DATA,GET_LOGIN_RESINFO,GET_REGISTER_RESINFO } from '../constants';
+import { GET_KNOWLEDGE_INFO,GET_ARTICLE_INFO,GET_LOGIN_RESINFO,GET_REGISTER_RESINFO } from '../constants';
 import { XHR } from '../utils';
-export function getListData() {//获取列表数据
-    return dispatch => {
-        XHR( {
-            url:'/api/user/listdata',
-            success: res => {
-                dispatch( receiveListData( res ) )
-            }
-        } )
-    }
-}
-function receiveListData( json ) {
+
+//获取列表数据
+function receiveKnowledgeInfo( json ) {
     return {
-        type: GET_LIST_DATA,
+        type: GET_KNOWLEDGE_INFO,
         json,
         receiveAt: Date.now(),
     }
 }
+export function getKnowledgeInfo() {
+    return dispatch => {
+        XHR( {
+            url:'/api/user/knowledge',
+            success: res => {
+                dispatch( receiveKnowledgeInfo( res ) )
+            }
+        } )
+    }
+}
 
-export function goToRegister( params ) {//注册请求
+//获取文章信息
+function receiveArticelInfo( json ) {
+    return {
+        type: GET_ARTICLE_INFO,
+        json,
+        receiveAt: Date.now(),
+    }
+}
+export function getArticleInfo() {
+    return dispatch => {
+        XHR( {
+            url:'/api/user/article',
+            success: res => {
+                dispatch( receiveArticelInfo( res ) )
+            }
+        } )
+    }
+}
+
+//注册请求
+function receiveRegister( json ) {
+    return {
+        type: GET_REGISTER_RESINFO,
+        json,
+        receiveAt: Date.now(),
+    }
+}
+export function goToRegister( params ) {
     return dispatch => {
         XHR( {
             type: 'post',
@@ -31,16 +60,16 @@ export function goToRegister( params ) {//注册请求
         } )
     }
 }
-function receiveRegister( json ) {
 
+//登陆请求
+function receiveLogin( json ) {
     return {
-        type: GET_REGISTER_RESINFO,
+        type: GET_LOGIN_RESINFO,
         json,
         receiveAt: Date.now(),
     }
 }
-
-export function goToLogin( params ) {//登陆请求
+export function goToLogin( params ) {
     return dispatch => {
         XHR( {
             type: 'post',
@@ -52,13 +81,7 @@ export function goToLogin( params ) {//登陆请求
         } )
     }
 }
-function receiveLogin( json ) {
-    return {
-        type: GET_LOGIN_RESINFO,
-        json,
-        receiveAt: Date.now(),
-    }
-}
+
 
 
 
