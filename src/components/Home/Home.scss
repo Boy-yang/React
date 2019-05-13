@@ -8,6 +8,11 @@
         float: left;
         width: 67%;
         background: #fff;
+        .page{
+            width: 30%;
+            text-align: center;
+            margin: 0 auto;
+        }
 
         .detail {
             width: 100%;
@@ -34,9 +39,15 @@
             .main {
                 width: 20rem;
                 height: 6rem;
-                line-height: 2rem;
+                line-height: 1.5rem;
                 padding: 1rem;
                 border-bottom: 1px solid #f2f3f8;
+                p{
+                    width: 90%;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
 
                 ul li {
                     display: inline-block;
@@ -90,7 +101,7 @@
 
         .register {
             padding: .5rem .5rem 0 .5rem;
-            height: 15rem;
+            min-height: 15rem;
             background: #fff;
             margin-bottom: 1rem;
             overflow: hidden;
@@ -136,7 +147,7 @@
 
         .login {
             padding: .5rem .5rem 0 .5rem;
-            height: 13rem;
+            min-height: 13rem;
             background: #fff;
             margin-bottom: 1rem;
             overflow: hidden;

@@ -54,7 +54,6 @@ export function goToRegister( params ) {
             url: '/api/user/register',
             data: params,
             success: res => {
-               
                 dispatch( receiveRegister( res ) )
             }
         } )

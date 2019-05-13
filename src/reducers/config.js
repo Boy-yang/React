@@ -3,8 +3,8 @@ import { GET_KNOWLEDGE_INFO,GET_ARTICLE_INFO, GET_REGISTER_RESINFO,GET_LOGIN_RES
 let initialState = {
     knowledgeInfo:[],
     articleInfo:[],
-    registerResInfo: {},
-    loginResInfo: {},
+    registerRes: {},
+    loginRes: {},
 };
 export default function update( state = initialState, action ) {
     switch ( action.type ) {
@@ -22,11 +22,11 @@ export default function update( state = initialState, action ) {
             } );
         case GET_REGISTER_RESINFO:
             return Object.assign( {}, state, {
-                registerResInfo: action.json,
+                registerRes: action.json,
             } );
         case GET_LOGIN_RESINFO:
             return Object.assign( {}, state, {
-                loginResInfo: action.json,
+                loginRes: action.json,
             } );
         default:
             return state;

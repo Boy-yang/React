@@ -6,17 +6,23 @@ import {
   Input,
   Button,
   Tag,
+  message,
+  Pagination
 } from "antd";
-import { getArticleInfo } from "../../actions/index";
+import { getArticleInfo, goToRegister, goToLogin } from "../../actions/index";
 //引入公共组件
 import Header from "../common/Header/Header"
 import './Home.scss';
 const FormItem = Form.Item;
 
 @connect(state => ({
-  articleInfo: state.config.articleInfo
+  articleInfo: state.config.articleInfo,
+  registerRes: state.config.registerRes,
+  loginRes: state.config.loginRes
 }), {
-    getArticleInfo
+    getArticleInfo,
+    goToRegister,
+    goToLogin
   }
 )
 class Home extends Component {
@@ -26,13 +32,14 @@ class Home extends Component {
     this.state = {
       loading: false,
       show: false,
-      flag: true,//默认显示登陆
+      flag: false,//默认显示登陆
       query: {
         username: '',//用户名
-        phoneNo: '',//手机号
+        phoneNumber: '',//手机号
         password: '',//密码
       },
       warning: {},
+      pageSize:1
     }
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -60,8 +67,17 @@ class Home extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { articleInfo } = nextProps;
-    let { loading } = prevState;
+    const { articleInfo, registerRes, loginRes } = nextProps;
+    let { loading, flag } = prevState;
+    if (Object.keys(registerRes).length !== 0 && flag === false) {
+      flag = true;
+      if (message.success(registerRes.msg)) {
+        return {
+          flag
+        }
+      }
+    }
+
     if (articleInfo.length !== 0 && loading === true) {
       return {
         loading: false
@@ -70,123 +86,183 @@ class Home extends Component {
     return null;
   }
 
-
   getData() {
     this.setState({
       loading: true,
     }, this.props.getArticleInfo())
   }
 
-  login() {
-
+  toLogin() {
+    const { phoneNumber, password } = this.state.query
+    let params = {
+      phoneNumber,
+      password
+    };
+    if (this.loginVerify()) {
+      this.setState({
+        loading: true
+      }, this.props.goToLogin(params))
+    }
   }
 
-  register() {
+  toRegister() {
     const { query } = this.state;
     let params = {
       ...query
     };
-    if (this.handleVerify()) {
+    if (this.registerVerify()) {
       this.setState({
         loading: true
-      }, this.goRegister(params))
+      }, this.props.goToRegister(params));
     }
   }
 
-  changeFlag(){
-    const {flag}=this.state;
+  changeFlag() {
+    const { flag } = this.state;
     this.setState({
-      flag:!flag
+      flag: !flag
     })
   }
 
+  //登陆信息验证
+  loginVerify() {
+
+  }
 
   //注册信息验证
-  handleVerify() {
-    const { query } = this.state;
-    const { username, phoneNo, password } = query;
+  registerVerify() {
+    const { query, warning } = this.state;
+    const { username, phoneNumber, password } = query;
     const TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
     const PWD_REGEXP = /^([0-9a-zA-Z]{8,16})$/;
-    if (username && phoneNo && password) {
-      if (TEL_REGEXP.test(phoneNo) && PWD_REGEXP.test(password)) {
+    if (!username && !phoneNumber && !password) {
+      warning.usernameWarning = '用户名不能为空';
+      warning.phoneNumberWarning = '手机号不能为空';
+      warning.passwordWarning = '密码不能为空';
+      this.setState({
+        warning
+      });
+      return false;
+    } else if (username && phoneNumber && password) {
+      if (!TEL_REGEXP.test(phoneNumber) && !PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '';
+        warning.phoneNumberWarning = '手机号格式有误';
+        warning.passwordWarning = '密码不符合要求';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else if (!TEL_REGEXP.test(phoneNumber) && PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '';
+        warning.phoneNumberWarning = '手机号格式有误';
+        warning.passwordWarning = '';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else if (TEL_REGEXP.test(phoneNumber) && !PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '';
+        warning.phoneNumberWarning = '';
+        warning.passwordWarning = '密码不符合要求';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else {
+        warning.usernameWarning = '';
+        warning.phoneNumberWarning = '';
+        warning.passwordWarning = '';
+        this.setState({
+          warning,
+        });
         return true;
-      } else if (!TEL_REGEXP.test(phoneNo) && !PWD_REGEXP.test(password)) {
-        warning.usernameWarning = '';
-        warning.phoneNoWarning = '手机号格式有误';
-        warning.passwordWarning = '密码不符合要求';
-        this.setState({
-          warning
-        });
-        return false;
-      } else if (!TEL_REGEXP.test(phoneNo)) {
-        warning.usernameWarning = '';
-        warning.phoneNoWarning = '手机号格式有误';
-        warning.passwordWarning = '密码不符合要求';
-        this.setState({
-          warning
-        });
-        return false;
-      } else if (!PWD_REGEXP.test(password)) {
-        warning.usernameWarning = '';
-        warning.phoneNoWarning = '';
-        warning.passwordWarning = '密码不符合要求';
-        this.setState({
-          warning
-        });
-        return false;
       }
-    } else if (!username && !phoneNo && !password) {
-      warning.usernameWarning = '用户名不能为空';
-      warning.phoneNoWarning = '手机号不能为空';
+    } else if (username && phoneNumber) {
+      if (!TEL_REGEXP.test(phoneNumber)) {
+        warning.phoneNumberWarning = '手机号格式有误';
+      } else {
+        warning.phoneNumberWarning = '';
+      }
+      warning.usernameWarning = '';
       warning.passwordWarning = '密码不能为空';
       this.setState({
         warning
       });
       return false;
-    } else if (!username && !phoneNo) {
-      warning.usernameWarning = '用户名不能为空';
-      warning.phoneNoWarning = '手机号不能为空';
-      warning.passwordWarning = '';
-      this.setState({
-        warning
-      });
-      return false;
-    } else if (!username && !password) {
-      warning.usernameWarning = '用户名不能为空';
-      warning.phoneNoWarning = '手机号不能为空';
-      warning.passwordWarning = '';
-      this.setState({
-        warning
-      });
-      return false;
-    } else if (!phoneNo && !password) {
+    } else if (username && password) {
+      if (!PWD_REGEXP.test(password)) {
+        warning.passwordWarning = '密码不符合要求';
+      } else {
+        warning.passwordWarning = '';
+      }
       warning.usernameWarning = '';
-      warning.phoneNoWarning = '手机号不能为空';
+      warning.phoneNumberWarning = '手机号不能为空';
+      this.setState({
+        warning
+      });
+      return false;
+    } else if (phoneNumber && password) {
+      if (!TEL_REGEXP.test(phoneNumber) && !PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '用户名不能为空';
+        warning.phoneNumberWarning = '手机号格式有误';
+        warning.passwordWarning = '密码不符合要求';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else if (!TEL_REGEXP.test(phoneNumber) && PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '用户名不能为空';
+        warning.phoneNumberWarning = '手机号格式有误';
+        warning.passwordWarning = '';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else if (TEL_REGEXP.test(phoneNumber) && !PWD_REGEXP.test(password)) {
+        warning.usernameWarning = '用户名不能为空';
+        warning.phoneNumberWarning = '';
+        warning.passwordWarning = '密码不符合要求';
+        this.setState({
+          warning,
+        });
+        return false;
+      } else {
+        warning.usernameWarning = '用户名不能为空';
+        warning.phoneNumberWarning = '';
+        warning.passwordWarning = '';
+        this.setState({
+          warning,
+        });
+        return true;
+      }
+    } else if (username) {
+      warning.usernameWarning = '';
+      warning.phoneNumberWarning = '手机号不能为空';
       warning.passwordWarning = '密码不能为空';
       this.setState({
         warning
       });
       return false;
-    } else if (!username) {
+    } else if (phoneNumber) {
+      if (!TEL_REGEXP.test(phoneNumber)) {
+        warning.phoneNumberWarning = '手机号格式有误';
+      } else {
+        warning.phoneNumberWarning = '';
+      }
       warning.usernameWarning = '用户名不能为空';
-      warning.phoneNoWarning = '';
-      warning.passwordWarning = '';
-      this.setState({
-        warning
-      });
-      return false;
-    } else if (!phoneNo) {
-      warning.usernameWarning = '';
-      warning.phoneNoWarning = '手机号不能为空';
-      warning.passwordWarning = '';
-      this.setState({
-        warning
-      });
-      return false;
-    } else if (!password) {
-      warning.usernameWarning = '';
-      warning.phoneNoWarning = '';
       warning.passwordWarning = '密码不能为空';
+      this.setState({
+        warning
+      });
+      return false;
+    } else if (password) {
+      if (!PWD_REGEXP.test(password)) {
+        warning.passwordWarning = '密码不符合要求';
+      } else {
+        warning.passwordWarning = '';
+      }
+      warning.usernameWarning = '用户名不能为空';
+      warning.phoneNumberWarning = '手机号不能为空';
       this.setState({
         warning
       });
@@ -212,15 +288,15 @@ class Home extends Component {
   }
 
   handleKeyDown(keyCode) {
-    const { phoneNo, password } = this.state.query;
-    if (keyCode === 13 && phoneNo && password) {
-      this.goRegister();//去注册
+    const { phoneNumber, password } = this.state.query;
+    if (keyCode === 13 && phoneNumber && password) {
+      this.toRegister();//去注册
     }
   }
 
   render() {
-    const { warning, show,flag ,query } = this.state;
-    const { username, phoneNo, password } = query;
+    const { warning, show, flag,pageSize, query } = this.state;
+    const { username, phoneNumber, password } = query;
     const { articleInfo } = this.props;
     return (
       <>
@@ -235,21 +311,19 @@ class Home extends Component {
                     <p className='date'><span>{item.date}</span></p>
                   </div>
                   <div className='main'>
-                    <Link to={`/article/${item.id}`}>{item.title}</Link>
+                    <h2>文章标题：{item.title}</h2>
+                    <p>{item.content}</p>
                     <ul>
                       <li>
                         <i className="fa fa-book" aria-hidden="true"></i>
-                        <a href='#'>文章</a>
-                      </li>
-                      <li>
-                        <i className="fa fa-share-square-o" aria-hidden="true"></i>
-                        <a href='#'>分享</a>
+                        <Link to={`/article/${item.id}`}>阅读全文</Link>
                       </li>
                     </ul>
                   </div>
                 </div>
               ))
             }
+            <Pagination className='page' simple defaultCurrent={pageSize} total={50} />
           </div>
           <div className='side'>
             <div className='userInfo'>
@@ -268,14 +342,14 @@ class Home extends Component {
                     <FormItem>
                       <Input
                         className='login-info'
-                        type="phoneNo"
+                        type="phoneNumber"
                         placeholder='手机号'
-                        value={phoneNo}
+                        value={phoneNumber}
                         maxLength={11}
-                        onChange={(e) => this.handleValueChange(e, 'phoneNo')}
+                        onChange={(e) => this.handleValueChange(e, 'phoneNumber')}
                         onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
                       />
-                      <p className='warning'>{warning.phoneNoWarning}</p>
+                      <p className='warning'>{warning.phoneNumberWarning}</p>
                     </FormItem>
                     <FormItem>
                       <Input
@@ -292,7 +366,7 @@ class Home extends Component {
                       <Button
                         className="login-button"
                         type="primary"
-                        onClick={() => this.login()}>立即登陆</Button>
+                        onClick={() => this.toLogin()}>立即登陆</Button>
                       <p>
                         <span className='no-count'>没有账号?</span>
                         <a
@@ -304,7 +378,7 @@ class Home extends Component {
                           className="forgot-password"
                           style={{ float: 'right' }}>
                           忘记密码
-                    </Link>
+                        </Link>
                       </p>
                     </FormItem>
                     <FormItem>
@@ -337,14 +411,14 @@ class Home extends Component {
                     <FormItem>
                       <Input
                         className='register-info'
-                        type="phoneNo"
+                        type="phoneNumber"
                         placeholder='手机号'
-                        value={phoneNo}
+                        value={phoneNumber}
                         maxLength={11}
-                        onChange={(e) => this.handleValueChange(e, 'phoneNo')}
+                        onChange={(e) => this.handleValueChange(e, 'phoneNumber')}
                         onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
                       />
-                      <p className='warning'>{warning.phoneNoWarning}</p>
+                      <p className='warning'>{warning.phoneNumberWarning}</p>
                     </FormItem>
                     <FormItem>
                       <Input
@@ -355,13 +429,13 @@ class Home extends Component {
                         onChange={(e) => this.handleValueChange(e, "password")}
                         onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
                       />
-                      <p className='warning'>{warning.passwardWarning}</p>
+                      <p className='warning'>{warning.passwordWarning}</p>
                     </FormItem>
                     <FormItem>
                       <Button
                         className="register-button"
                         type="primary"
-                        onClick={() => this.register()}>立即注册</Button>
+                        onClick={() => this.toRegister()}>立即注册</Button>
                       <p>
                         <span className='have-count'>已有账号?</span>
                         <a
