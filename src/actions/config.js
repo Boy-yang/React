@@ -1,4 +1,9 @@
-import { GET_KNOWLEDGE_INFO,GET_ARTICLE_INFO,GET_LOGIN_RESINFO,GET_REGISTER_RESINFO } from '../constants';
+import { 
+    GET_KNOWLEDGE_INFO,
+    GET_ARTICLE_INFO,
+    GET_LOGIN_RESINFO,
+    GET_REGISTER_RESINFO,
+    GET_USER_INFO } from '../constants';
 import { XHR } from '../utils';
 
 //获取列表数据
@@ -76,6 +81,27 @@ export function goToLogin( params ) {
             data: params,
             success: data => {
                 dispatch( receiveLogin( data ) )
+            }
+        } )
+    }
+}
+
+//获取用户信息
+function receiveUserInfo( json ) {
+    return {
+        type: GET_USER_INFO,
+        json,
+        receiveAt: Date.now(),
+    }
+}
+export function getUserInfo( params ) {
+    return dispatch => {
+        XHR( {
+            type: 'post',
+            url: '/api/user/getUserInfo',
+            data: params,
+            success: data => {
+                dispatch( receiveUserInfo( data ) )
             }
         } )
     }

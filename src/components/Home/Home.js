@@ -9,43 +9,50 @@ import {
   message,
   Pagination
 } from "antd";
-import { getArticleInfo, goToRegister, goToLogin } from "../../actions/index";
+import { getArticleInfo, goToRegister, goToLogin, getUserInfo } from "../../actions/index";
 //引入公共组件
 import Header from "../common/Header/Header"
 import './Home.scss';
+import { XHR } from '../../utils';
 const FormItem = Form.Item;
 
 @connect(state => ({
   articleInfo: state.config.articleInfo,
   registerRes: state.config.registerRes,
-  loginRes: state.config.loginRes
+  loginRes: state.config.loginRes,
+  userInfo: state.config.userInfo
 }), {
     getArticleInfo,
     goToRegister,
-    goToLogin
+    goToLogin,
+    getUserInfo
   }
 )
 class Home extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       loading: false,
       show: false,
-      flag: false,//默认显示登陆
+      flag: true,//默认显示登陆
       query: {
         username: '',//用户名
         phoneNumber: '',//手机号
         password: '',//密码
       },
       warning: {},
-      pageSize:1
+      pageSize: 1
     }
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
+    let username = this.getCookie()
+    let params = {
+      username,
+    }
     this.getData();
+    this.props.getUserInfo(params);
     document.body.addEventListener('scroll', this.handleScroll);
   }
 
@@ -77,6 +84,17 @@ class Home extends Component {
         }
       }
     }
+    if (Object.keys(loginRes).length !== 0) {
+      if (loginRes.success) {
+        message.success(loginRes.msg);
+      } else {
+        message.error(loginRes.msg)
+      }
+
+      return {
+        loading: false
+      }
+    }
 
     if (articleInfo.length !== 0 && loading === true) {
       return {
@@ -89,13 +107,40 @@ class Home extends Component {
   getData() {
     this.setState({
       loading: true,
-    }, this.props.getArticleInfo())
+    }, () => {
+      this.props.getArticleInfo();
+    }
+    )
+  }
+
+  setCookie(obj) {
+    const { username } = obj;
+    let date = new Date();
+    date.setDate(date.getDate() + 5);
+    document.cookie = `username=${username};expires=${date}`;
+  }
+
+  getCookie() {
+    let arr = document.cookie.split('=');
+    return decodeURIComponent(arr[1]);
+  }
+
+  logout() {
+    XHR({
+      url: '/api/user/logout',
+      success:(res)=>{
+        console.log(res)
+      }
+    })
   }
 
   toLogin() {
-    const { phoneNumber, password } = this.state.query
+    const { username, password } = this.state.query;
+    if (username && password) {
+      this.setCookie({ username, password });
+    }
     let params = {
-      phoneNumber,
+      username,
       password
     };
     if (this.loginVerify()) {
@@ -126,7 +171,47 @@ class Home extends Component {
 
   //登陆信息验证
   loginVerify() {
-
+    const { warning, query } = this.state;
+    const { username, password } = query;
+    const PWD_REGEXP = /^([0-9a-zA-Z]{8,16})$/;
+    //用户名和密码验证
+    if (!username && !password) {
+      warning.usernameWarning = '用户名不能为空';
+      warning.passwordWarning = '密码不能为空';
+      this.setState({
+        warning
+      });
+      return false;
+    } else if (username && !password) {
+      warning.usernameWarning = '';
+      warning.passwordWarning = '密码不能为空';
+      this.setState({
+        warning
+      });
+      return false;
+    } else if (!username && password) {
+      warning.usernameWarning = '用户名不能为空';
+      if (!PWD_REGEXP.test(password)) {
+        warning.passwordWarning = '密码不符合要求';
+      } else {
+        warning.passwordWarning = '';
+      }
+      this.setState({
+        warning
+      });
+      return false;
+    } else {
+      warning.usernameWarning = '';
+      if (!PWD_REGEXP.test(password)) {
+        warning.passwordWarning = '密码不符合要求';
+      } else {
+        warning.passwordWarning = '';
+      }
+      this.setState({
+        warning
+      });
+      return true;
+    }
   }
 
   //注册信息验证
@@ -288,16 +373,17 @@ class Home extends Component {
   }
 
   handleKeyDown(keyCode) {
-    const { phoneNumber, password } = this.state.query;
-    if (keyCode === 13 && phoneNumber && password) {
+    const { username, phoneNumber, password } = this.state.query;
+    if (keyCode === 13 && username && phoneNumber && password) {
       this.toRegister();//去注册
     }
   }
 
   render() {
-    const { warning, show, flag,pageSize, query } = this.state;
+    const { warning, show, flag, pageSize, query } = this.state;
     const { username, phoneNumber, password } = query;
-    const { articleInfo } = this.props;
+    const { articleInfo, userInfo, loginRes } = this.props;
+
     return (
       <>
         <Header />
@@ -326,137 +412,144 @@ class Home extends Component {
             <Pagination className='page' simple defaultCurrent={pageSize} total={50} />
           </div>
           <div className='side'>
-            <div className='userInfo'>
-              <h4>欢迎光临我的博客！</h4>
-              <p>用户名：Boy-yang</p>
-              <p>座右铭：生命不止，奋斗不惜！</p>
-              <p>关注：6</p>
-              <p>关注者：1</p>
-              <p className='watch'>+  关注</p>
-            </div>
             {
-              flag ?
-                <div className='login'>
-                  <h2 className='login-title'>欢迎登陆</h2>
-                  <Form className='login-form' autoComplete='off'>
-                    <FormItem>
-                      <Input
-                        className='login-info'
-                        type="phoneNumber"
-                        placeholder='手机号'
-                        value={phoneNumber}
-                        maxLength={11}
-                        onChange={(e) => this.handleValueChange(e, 'phoneNumber')}
-                        onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
-                      />
-                      <p className='warning'>{warning.phoneNumberWarning}</p>
-                    </FormItem>
-                    <FormItem>
-                      <Input
-                        className='login-info'
-                        type="password"
-                        placeholder='请输入8-16位密码'
-                        value={password}
-                        onChange={(e) => this.handleValueChange(e, "password")}
-                        onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
-                      />
-                      <p className='warning'>{warning.passwardWarning}</p>
-                    </FormItem>
-                    <FormItem>
-                      <Button
-                        className="login-button"
-                        type="primary"
-                        onClick={() => this.toLogin()}>立即登陆</Button>
-                      <p>
-                        <span className='no-count'>没有账号?</span>
-                        <a
-                          href='javascript:;'
-                          className='go-register'
-                          onClick={() => this.changeFlag()}> 去注册...</a>
-                        <Link
-                          to='/forget'
-                          className="forgot-password"
-                          style={{ float: 'right' }}>
-                          忘记密码
-                        </Link>
-                      </p>
-                    </FormItem>
-                    <FormItem>
-                      <div className="other-login">
-                        <p>第三方账号登录：</p>
-                        <p>
-                          <img title="微博" alt="微博" src="https://b-gold-cdn.xitu.io/v3/static/img/weibo.fa758eb.svg" />
-                          <img title="GitHub" alt="GitHub" src="https://b-gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" />
-                          <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
-                        </p>
-                      </div>
-                    </FormItem>
-                  </Form>
+              loginRes.username || userInfo
+                ?
+                <div className='userInfo'>
+                  <h4>欢迎光临我的博客！</h4>
+                  <p>用户名：{userInfo.username}</p>
+                  <p>座右铭：生命不止，奋斗不惜！</p>
+                  <p><a href='javascript:;' onClick={() => this.logout()}>退出登陆</a></p>
                 </div>
                 :
-                <div className='register'>
-                  <h2 className='register-title'>欢迎注册</h2>
-                  <Form className='register-form' autoComplete='off'>
-                    <FormItem>
-                      <Input
-                        className='register-info'
-                        type="username"
-                        placeholder='用户名'
-                        value={username}
-                        onChange={(e) => this.handleValueChange(e, 'username')}
-                        onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
-                      />
-                      <p className='warning'>{warning.usernameWarning}</p>
-                    </FormItem>
-                    <FormItem>
-                      <Input
-                        className='register-info'
-                        type="phoneNumber"
-                        placeholder='手机号'
-                        value={phoneNumber}
-                        maxLength={11}
-                        onChange={(e) => this.handleValueChange(e, 'phoneNumber')}
-                        onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
-                      />
-                      <p className='warning'>{warning.phoneNumberWarning}</p>
-                    </FormItem>
-                    <FormItem>
-                      <Input
-                        className='register-info'
-                        type="password"
-                        placeholder='请输入8-16位密码'
-                        value={password}
-                        onChange={(e) => this.handleValueChange(e, "password")}
-                        onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
-                      />
-                      <p className='warning'>{warning.passwordWarning}</p>
-                    </FormItem>
-                    <FormItem>
-                      <Button
-                        className="register-button"
-                        type="primary"
-                        onClick={() => this.toRegister()}>立即注册</Button>
-                      <p>
-                        <span className='have-count'>已有账号?</span>
-                        <a
-                          href='javascript:;'
-                          className='go-login'
-                          onClick={() => this.changeFlag()}> 去登陆...</a>
-                      </p>
-                    </FormItem>
-                    <FormItem>
-                      <div className="other-login">
-                        <p>第三方账号登录：</p>
-                        <p>
-                          <img title="微博" alt="微博" src="https://b-gold-cdn.xitu.io/v3/static/img/weibo.fa758eb.svg" />
-                          <img title="GitHub" alt="GitHub" src="https://b-gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" />
-                          <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
-                        </p>
+                <>
+                  {
+                    flag ?
+                      <div className='login'>
+                        < h2 className='login-title'>欢迎登陆</h2>
+                        <Form className='login-form' autoComplete='off'>
+                          <FormItem>
+                            <Input
+                              className='login-info'
+                              type="username"
+                              placeholder='用户名'
+                              value={username}
+                              maxLength={11}
+                              onChange={(e) => this.handleValueChange(e, 'username')}
+                              onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
+                            />
+                            <p className='warning'>{warning.usernameWarning}</p>
+                          </FormItem>
+                          <FormItem>
+                            <Input
+                              className='login-info'
+                              type="password"
+                              placeholder='请输入8-16位密码'
+                              value={password}
+                              onChange={(e) => this.handleValueChange(e, "password")}
+                              onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
+                            />
+                            <p className='warning'>{warning.passwordWarning}</p>
+                          </FormItem>
+                          <FormItem>
+                            <Button
+                              className="login-button"
+                              type="primary"
+                              onClick={() => this.toLogin()}>立即登陆</Button>
+                            <p>
+                              <span className='no-count'>没有账号?</span>
+                              <a
+                                href='javascript:;'
+                                className='go-register'
+                                onClick={() => this.changeFlag()}> 去注册...</a>
+                              <Link
+                                to='/forget'
+                                className="forgot-password"
+                                style={{ float: 'right' }}>
+                                忘记密码
+                          </Link>
+                            </p>
+                          </FormItem>
+                          <FormItem>
+                            <div className="other-login">
+                              <p>第三方账号登录：</p>
+                              <p>
+                                <img title="微博" alt="微博" src="https://b-gold-cdn.xitu.io/v3/static/img/weibo.fa758eb.svg" />
+                                <img title="GitHub" alt="GitHub" src="https://b-gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" />
+                                <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
+                              </p>
+                            </div>
+                          </FormItem>
+                        </Form>
                       </div>
-                    </FormItem>
-                  </Form>
-                </div>
+                      :
+                      <div className='register'>
+                        <h2 className='register-title'>欢迎注册</h2>
+                        <Form className='register-form' autoComplete='off'>
+                          <FormItem>
+                            <Input
+                              className='register-info'
+                              type="username"
+                              placeholder='用户名'
+                              value={username}
+                              onChange={(e) => this.handleValueChange(e, 'username')}
+                              onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
+                            />
+                            <p className='warning'>{warning.usernameWarning}</p>
+                          </FormItem>
+                          <FormItem>
+                            <Input
+                              className='register-info'
+                              type="phoneNumber"
+                              placeholder='手机号'
+                              value={phoneNumber}
+                              maxLength={11}
+                              onChange={(e) => this.handleValueChange(e, 'phoneNumber')}
+                              onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
+                            />
+                            <p className='warning'>{warning.phoneNumberWarning}</p>
+                          </FormItem>
+                          <FormItem>
+                            <Input
+                              className='register-info'
+                              type="password"
+                              placeholder='请输入8-16位密码'
+                              value={password}
+                              onChange={(e) => this.handleValueChange(e, "password")}
+                              onKeyDown={(e) => this.handleKeyDown(e.keyCode)}
+                            />
+                            <p className='warning'>{warning.passwordWarning}</p>
+                          </FormItem>
+                          <FormItem>
+                            <Button
+                              className="register-button"
+                              type="primary"
+                              onClick={() => this.toRegister()}>立即注册</Button>
+                            <p>
+                              <span className='have-count'>已有账号?</span>
+                              <a
+                                href='javascript:;'
+                                className='go-login'
+                                onClick={() => this.changeFlag()}> 去登陆...</a>
+                            </p>
+                          </FormItem>
+                          <FormItem>
+                            <div className="other-login">
+                              <p>第三方账号登录：</p>
+                              <p>
+                                <img title="微博" alt="微博" src="https://b-gold-cdn.xitu.io/v3/static/img/weibo.fa758eb.svg" />
+                                <img title="GitHub" alt="GitHub" src="https://b-gold-cdn.xitu.io/v3/static/img/github.547dd8a.svg" />
+                                <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
+                              </p>
+                            </div>
+                          </FormItem>
+                        </Form>
+                      </div>
+                  }
+                </>
             }
+
+
             <div className='hot-tags'>
               <div className='tag-header'>
                 <h4>热门标签</h4>

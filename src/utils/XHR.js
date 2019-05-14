@@ -11,9 +11,13 @@ const XHR = ( opts = {} ) => {
     const url = host + opts.url;
     //创建xhr对象，判断浏览器是否支持XMLHttpRequest
     let xhr;
+//XMLHttpRequest发送请求时需要设置withCredentials属性为true,来允许浏览器在自己的域设置cookie值。
+//如果withCredentials没有设置为true，就会出现Response Headers有Set-Cookie，但是浏览器却没有存储cookie的情况。
+   
     window.XMLHttpRequest ?
         xhr = new XMLHttpRequest() :
         xhr = new ActiveXObject( 'Microsoft.XMLHTTP' );
+        xhr.withCredentials=true;
     switch ( type ) {
         case 'get':
             xhr.open( 'get', url + "?" + params, async );
