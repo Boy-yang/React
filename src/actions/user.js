@@ -1,48 +1,9 @@
 import { 
-    GET_KNOWLEDGE_INFO,
-    GET_ARTICLE_INFO,
     GET_LOGIN_RESINFO,
     GET_REGISTER_RESINFO,
-    GET_USER_INFO } from '../constants';
+    GET_USER_INFO,
+    USER_LOGOUT } from '../constants';
 import { XHR } from '../utils';
-
-//获取列表数据
-function receiveKnowledgeInfo( json ) {
-    return {
-        type: GET_KNOWLEDGE_INFO,
-        json,
-        receiveAt: Date.now(),
-    }
-}
-export function getKnowledgeInfo() {
-    return dispatch => {
-        XHR( {
-            url:'/api/user/knowledge',
-            success: res => {
-                dispatch( receiveKnowledgeInfo( res ) )
-            }
-        } )
-    }
-}
-
-//获取文章信息
-function receiveArticelInfo( json ) {
-    return {
-        type: GET_ARTICLE_INFO,
-        json,
-        receiveAt: Date.now(),
-    }
-}
-export function getArticleInfo() {
-    return dispatch => {
-        XHR( {
-            url:'/api/user/article',
-            success: res => {
-                dispatch( receiveArticelInfo( res ) )
-            }
-        } )
-    }
-}
 
 //注册请求
 function receiveRegister( json ) {
@@ -81,6 +42,25 @@ export function goToLogin( params ) {
             data: params,
             success: data => {
                 dispatch( receiveLogin( data ) )
+            }
+        } )
+    }
+}
+
+// 退出登陆请求
+function receiveUserLogout( json ) {
+    return {
+        type: USER_LOGOUT,
+        json,
+        receiveAt: Date.now(),
+    }
+}
+export function userLogout() {
+    return dispatch => {
+        XHR( {
+            url: '/api/user/logout',
+            success: res => {
+                dispatch( receiveUserLogout( res ) )
             }
         } )
     }

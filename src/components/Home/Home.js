@@ -6,26 +6,28 @@ import {
   Input,
   Button,
   Tag,
-  message,
+  notification,
   Pagination
 } from "antd";
-import { getArticleInfo, goToRegister, goToLogin, getUserInfo } from "../../actions/index";
+import { getArticleList, goToRegister, goToLogin, getUserInfo, userLogout } from "../../actions/index";
+import { formatTime } from '../../utils/index';
 //引入公共组件
 import Header from "../common/Header/Header"
 import './Home.scss';
-import { XHR } from '../../utils';
 const FormItem = Form.Item;
 
 @connect(state => ({
-  articleInfo: state.config.articleInfo,
-  registerRes: state.config.registerRes,
-  loginRes: state.config.loginRes,
-  userInfo: state.config.userInfo
+  articleList: state.article.articleList,
+  registerRes: state.user.registerRes,
+  loginRes: state.user.loginRes,
+  userInfo: state.user.userInfo,
+  logoutRes: state.user.logoutRes
 }), {
-    getArticleInfo,
+    getArticleList,
     goToRegister,
     goToLogin,
-    getUserInfo
+    getUserInfo,
+    userLogout
   }
 )
 class Home extends Component {
@@ -35,24 +37,23 @@ class Home extends Component {
       loading: false,
       show: false,
       flag: true,//默认显示登陆
+      current: 1,
+      limit: 5,
+      isPublish: true,
       query: {
         username: '',//用户名
         phoneNumber: '',//手机号
         password: '',//密码
       },
       warning: {},
-      pageSize: 1
+      list: []
     }
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
-    let username = this.getCookie()
-    let params = {
-      username,
-    }
     this.getData();
-    this.props.getUserInfo(params);
+    this.props.getUserInfo();
     document.body.addEventListener('scroll', this.handleScroll);
   }
 
@@ -74,71 +75,108 @@ class Home extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { articleInfo, registerRes, loginRes } = nextProps;
-    let { loading, flag } = prevState;
+    const { articleList, registerRes, loginRes, logoutRes } = nextProps;
+    let { loading, flag, list } = prevState;
+
+    //文章列表
+    if (Object.keys(articleList).length !== 0) {
+      loading=(loading ? false : loading);
+      list = articleList.responseData.list
+      return {
+        list,
+        loading
+      }
+    }
+
+    //注册成功通知
     if (Object.keys(registerRes).length !== 0 && flag === false) {
       flag = true;
-      if (message.success(registerRes.msg)) {
+      if (notification.success({
+        message: registerRes.msg,
+        duration: 2
+      })) {
         return {
           flag
         }
       }
     }
-    if (Object.keys(loginRes).length !== 0) {
-      if (loginRes.success) {
-        message.success(loginRes.msg);
-      } else {
-        message.error(loginRes.msg)
-      }
 
+    //登陆成功通知
+    if (Object.keys(loginRes).length !== 0) {
+      loading=(loading ? false : loading);
+      if (loginRes.success) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000)
+        notification.success({
+          message: loginRes.msg,
+          duration: 2
+        });
+      } else {
+        notification.error({
+          message: loginRes.msg,
+          duration: 2
+        });
+      }
       return {
-        loading: false
+        loading,
       }
     }
 
-    if (articleInfo.length !== 0 && loading === true) {
+    //退出成功通知
+    if (Object.keys(logoutRes).length !== 0) {
+      loading=(loading ? false : loading);
+      if (logoutRes.success) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000)
+        notification.success({
+          message: logoutRes.msg,
+          duration: 2
+        });
+      } else {
+        notification.error({
+          message: loginRes.msg,
+          duration: 2
+        });
+      }
       return {
-        loading: false
+        loading,
       }
     }
     return null;
   }
 
-  getData() {
+
+  //获取数据
+  getData(page) {
+    let { current, limit, isPublish } = this.state;
+    const params = {
+      start: page ? page : current,
+      limit,
+      isPublish
+    }
     this.setState({
       loading: true,
     }, () => {
-      this.props.getArticleInfo();
-    }
-    )
+      this.props.getArticleList(params);
+    });
   }
 
-  setCookie(obj) {
-    const { username } = obj;
-    let date = new Date();
-    date.setDate(date.getDate() + 5);
-    document.cookie = `username=${username};expires=${date}`;
+  //分页
+  changePage(page) {
+    this.getData(page)
   }
-
-  getCookie() {
-    let arr = document.cookie.split('=');
-    return decodeURIComponent(arr[1]);
-  }
-
+  //退出登陆
   logout() {
-    XHR({
-      url: '/api/user/logout',
-      success:(res)=>{
-        console.log(res)
-      }
-    })
+    this.setState({
+      loading: true,
+    }, this.props.userLogout())
   }
 
+  //去登陆
   toLogin() {
     const { username, password } = this.state.query;
-    if (username && password) {
-      this.setCookie({ username, password });
-    }
     let params = {
       username,
       password
@@ -150,6 +188,7 @@ class Home extends Component {
     }
   }
 
+  //去注册
   toRegister() {
     const { query } = this.state;
     let params = {
@@ -161,7 +200,7 @@ class Home extends Component {
       }, this.props.goToRegister(params));
     }
   }
-
+  //改变登陆注册的开关
   changeFlag() {
     const { flag } = this.state;
     this.setState({
@@ -355,6 +394,7 @@ class Home extends Component {
     }
   }
 
+  //回到顶部
   scrollTop() {
     let currentTop = document.documentElement.scrollTop || document.body.scrollTop;
     if (currentTop > 0) {
@@ -380,9 +420,9 @@ class Home extends Component {
   }
 
   render() {
-    const { warning, show, flag, pageSize, query } = this.state;
+    const { warning, show, flag, current, limit, query, list } = this.state;
     const { username, phoneNumber, password } = query;
-    const { articleInfo, userInfo, loginRes } = this.props;
+    const { articleList, userInfo } = this.props;
 
     return (
       <>
@@ -390,11 +430,10 @@ class Home extends Component {
         <div className="content">
           <div className='articles'>
             {
-              articleInfo.map(item => (
-                <div className='detail' key={item.id}>
+              list.map(item => (
+                <div className='detail' key={item._id}>
                   <div className='time'>
-                    <p className='hour'><b>{item.time}</b><span>{item.tChoose}</span></p>
-                    <p className='date'><span>{item.date}</span></p>
+                    {formatTime(item.time)}
                   </div>
                   <div className='main'>
                     <h2>文章标题：{item.title}</h2>
@@ -404,20 +443,36 @@ class Home extends Component {
                         <i className="fa fa-book" aria-hidden="true"></i>
                         <Link to={`/article/${item.id}`}>阅读全文</Link>
                       </li>
+                      <li>
+                        <i className="fa fa-book" aria-hidden="true"></i>
+                        <Link to={`/article/${item.id}`}>修改</Link>
+                      </li>
+                      <li>
+                        <i className="fa fa-book" aria-hidden="true"></i>
+                        <Link to={`/article/${item.id}`}>删除</Link>
+                      </li>
                     </ul>
                   </div>
                 </div>
               ))
             }
-            <Pagination className='page' simple defaultCurrent={pageSize} total={50} />
+            <Pagination
+              className='page'
+              simple
+              defaultCurrent={current}
+              defaultPageSize={limit}
+              // total={articleList.total} 
+              total={20}
+              onChange={(current) => this.changePage(current)}
+            />
           </div>
           <div className='side'>
             {
-              loginRes.username || userInfo
+              userInfo.data
                 ?
                 <div className='userInfo'>
                   <h4>欢迎光临我的博客！</h4>
-                  <p>用户名：{userInfo.username}</p>
+                  <p>用户名：{userInfo.data.username}</p>
                   <p>座右铭：生命不止，奋斗不惜！</p>
                   <p><a href='javascript:;' onClick={() => this.logout()}>退出登陆</a></p>
                 </div>

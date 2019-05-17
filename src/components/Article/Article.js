@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getArticleInfo } from '../../actions'
+import { getArticleDetail } from '../../actions'
 import './Article.scss';
 @withRouter
 @connect(state => ({
-    articleInfo: state.config.articleInfo
+    articleDetail: state.article.articleDetail
 }), {
-        getArticleInfo,
+        getArticleDetail,
     })
 class Article extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            loading:false,
-            articleId:this.props.match.params.id
+        this.state = {
+            loading: false,
+            articleId: this.props.match.params.id
         }
     }
 
@@ -23,9 +23,9 @@ class Article extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        const { articleInfo } = nextProps;
+        const { articleDetail } = nextProps;
         let { loading } = prevState;
-        if (articleInfo.length !== 0 && loading === true) {
+        if (articleDetail.length !== 0 && loading === true) {
             return {
                 loading: false
             }
@@ -34,29 +34,18 @@ class Article extends Component {
     }
 
     getData() {
+        const {articleId}=this.state;
         this.setState({
             loading: true
-        }, () => this.props.getArticleInfo())
+        }, () => this.props.getArticleDetail({articleId}))
     }
 
 
     render() {
-        const {articleInfo}=this.props;
-        const {articleId}=this.state;
+        const { articleDetail } = this.props;
         return (
             <div className='article'>
-                {
-                    articleInfo.map(item => {
-                        if(item.id === articleId){
-                            return (
-                                <div className='content' key={item.id}>
-                                    <h1>{item.title}</h1>
-                                    <div>{item.content}</div>
-                                </div>
-                            )
-                        }  
-                    })
-                }
+              articleDetail
             </div>
         );
     }

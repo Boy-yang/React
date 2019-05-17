@@ -1,17 +1,25 @@
 import {
-    getKnowledgeInfo,
-    getArticleInfo,
     goToLogin,
     goToRegister,
-    getUserInfo
-} from './config';
+    getUserInfo,
+    userLogout
+} from './user';
+
+import {
+    addArticle,
+    getArticleList,
+    getArticleDetail   
+} from './article';
 
 export {
-    getKnowledgeInfo,
-    getArticleInfo,
+    addArticle,
+    getArticleList,
+    getArticleDetail,
+    
     goToLogin,
     goToRegister,
-    getUserInfo
+    getUserInfo,
+    userLogout
 }
 
 
