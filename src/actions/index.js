@@ -7,12 +7,19 @@ import {
 
 import {
     addArticle,
+    delArticle,
+    searchArticle,
+    updateArticle,
     getArticleList,
     getArticleDetail   
 } from './article';
 
+
 export {
     addArticle,
+    delArticle,
+    searchArticle,
+    updateArticle,
     getArticleList,
     getArticleDetail,
     

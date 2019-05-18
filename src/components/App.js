@@ -7,10 +7,12 @@ const Home = lazy( () => import( "./Home/Home.js" ) );
 const Life = lazy( () => import( "./Life/Life.js" ) );
 const User = lazy( () => import( "./User/User.js" ) );
 const Write = lazy( () => import( "./Write/Write.js" ) );
+const Update = lazy( () => import( "./Update/Update.js" ) );
 const Article = lazy( () => import( "./Article/Article.js" ) );
-const Forget = lazy( () => import( "./Forget/Forget.js" ) );
+const LeaveMsg = lazy( () => import( "./LeaveMsg/LeaveMsg.js" ) );
 
 import "../style/reset.scss";
+
 
 class App extends Component {
   static get route() {
@@ -24,8 +26,9 @@ class App extends Component {
             { path: "/life", component: props => <Life { ...props } /> },
             { path: "/user", component: props => <User { ...props } /> },
             { path: "/write", component: props => <Write { ...props } /> },
+            { path: "/update/:id", component: props => <Update{ ...props } /> },
             { path: "/article/:id", component: props => <Article { ...props } /> },
-            { path: "/forget", component: props => <Forget { ...props } /> },  
+            { path: "/leaveMsg", component: props => <LeaveMsg { ...props } /> },  
           ].map( ( item, index ) => (
             <Route exact key={ index } { ...item } />
           ) )

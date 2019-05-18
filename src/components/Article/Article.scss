@@ -1,17 +1,22 @@
-.content{
+.article{
     width: 100%;
-    h1{
+    height:100rem;
+    background: #f6f6f6;
+    .form{
         width: 80%;
+        height:100rem;
+        margin: 0 auto;
+        background:#fff;
+    }
+    .title{
         height: 1rem;
         line-height: 1rem;
         text-align: center;
         margin: .5rem auto;
         margin-bottom:1rem;
     }
-    div{
-        width: 80%;
+    .detail{
         line-height: 1rem;
-        margin: 0 auto;
         color:#000;
         text-indent: 2em;
     }

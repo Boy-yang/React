@@ -11,7 +11,7 @@ class Header extends Component {
         super(props);
     }
 
-    
+
     handleSearch(value) {
         console.log(value)
     }
@@ -33,19 +33,23 @@ class Header extends Component {
                         <i className="fa fa-male" aria-hidden="true"></i>
                         <b>关于我</b>
                     </NavLink>
+                    <NavLink to='/leaveMsg' activeClassName='active'>
+                        <i className="fa fa-commenting-o" aria-hidden="true"></i>
+                        <b>留言</b>
+                    </NavLink>
                 </div>
-                <div className='search'>
+                {/* <div className='search'>
                     <Search
                         placeholder="input search text"
                         onSearch={value => this.handleSearch(value)}
                         enterButton
                     />
-                </div>
+                </div> */}
                 <div className='write'>
                     <Link to='/write'>
                         <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                         <b>写文章</b>
-                    </Link>      
+                    </Link>
                 </div>
             </div>
         );

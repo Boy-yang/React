@@ -1,9 +1,11 @@
-.user{
+
+.user {
     width: 100%;
     min-height: 60rem;
     background: #f6f6f6;
     padding: .5rem 2rem 0 2rem;
-    .introduce{
+
+    .introduce {
         width: 100%;
         background: #fff;
         padding: .5rem;
@@ -13,12 +15,14 @@
         margin-bottom: 1rem;
         display: flex;
         justify-content: space-between;
-        img{
+
+        img {
             width: 4rem;
             height: 4rem;
             border-radius: 2rem;
         }
-        .watch{
+
+        .watch {
             display: inline-block;
             width: 2.5rem;
             height: 1rem;
@@ -29,70 +33,82 @@
             background: #1890ff;
         }
     }
-    .education{
+
+    .education {
         width: 100%;
         background: #fff;
         padding: .5rem;
         height: 6rem;
         line-height: 1rem;
         margin-bottom: 1rem;
-        h3{
-            i{
+
+        h3 {
+            i {
                 margin-right: .2rem;
             }
         }
-        p{
+
+        p {
             display: flex;
             justify-content: space-between;
             margin-left: 1rem;
-            span{
+
+            span {
                 width: 14rem;
             }
         }
     }
-    .honor{
+
+    .honor {
         width: 100%;
         background: #fff;
         padding: .5rem;
         height: 14rem;
         margin-bottom: 1rem;
         line-height: 1rem;
-        h3{
-            i{
+
+        h3 {
+            i {
                 margin-right: .2rem;
             }
         }
-        p{
+
+        p {
             display: flex;
             justify-content: space-between;
             margin-left: 1rem;
-            span{
+
+            span {
                 width: 14rem;
             }
         }
     }
-    .work{
+
+    .work {
         width: 100%;
         background: #fff;
         padding: .5rem;
         height: 6rem;
         margin-bottom: 1rem;
         line-height: 1rem;
-        h3{
-            i{
+
+        h3 {
+            i {
                 margin-right: .2rem;
             }
         }
     }
-    .hobbies{
+
+    .hobbies {
         width: 100%;
         background: #fff;
         padding: .5rem;
         height: 6rem;
         margin-bottom: 1rem;
         line-height: 1rem;
-        h3{
-            i{
+
+        h3 {
+            i {
                 margin-right: .2rem;
             }
         }

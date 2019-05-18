@@ -1,13 +1,16 @@
 //action定义
-//user
-export const GET_REGISTER_RESINFO = 'GET_REGISTER_RESINFO';//获取注册响应信息
-export const GET_LOGIN_RESINFO = 'GET_LOGIN_RESINFO';//获取登陆响应信息
+//用户管理模块
+export const USER_REGISTER = 'USER_REGISTER';//用户注册
+export const USER_LOGIN = 'USER_LOGIN';//用户登录
 export const USER_LOGOUT = 'USER_LOGOUT';//退出登陆
 export const GET_USER_INFO = 'GET_USER_INFO';//获取用户信息
-export const TO_REGISTER = 'TO_REGISTER';//获取验证码
 
-//article
 
+//文章管理模块
 export const ADD_ARTICLE = 'ADD_ARTICLE';//添加文章
+export const DELETE_ARTICLE = 'DELETE_ARTICLE';//删除文章
+export const UPDATE_ARTICLE = 'UPDATE_ARTICLE';//更新文章
+export const SEARCH_ARTICLE = 'SEARCH_ARTICLE';//搜索文章
 export const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';//获取文章列表
 export const GET_ARTICLE_DETAIL = 'GET_ARTICLE_DETAIL';//获取文章详情
+

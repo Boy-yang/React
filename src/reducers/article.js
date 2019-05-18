@@ -1,12 +1,15 @@
 import { 
     GET_ARTICLE_LIST, 
     GET_ARTICLE_DETAIL,
-    ADD_ARTICLE
+    ADD_ARTICLE,
+    SEARCH_ARTICLE,
+    
     } from '../constants'
 
 let initialState = {
     articleList:{},
     articleDetail:[],
+    searchInfo:{},
     addRes:[]
 };
 export default function update( state = initialState, action ) {
@@ -22,6 +25,10 @@ export default function update( state = initialState, action ) {
         case ADD_ARTICLE:
             return Object.assign( {}, state, {
                 addRes: action.json,
+            } );
+        case SEARCH_ARTICLE:
+            return Object.assign( {}, state, {
+                searchInfo: action.json,
             } );
         default:
             return state;

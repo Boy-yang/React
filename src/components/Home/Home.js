@@ -6,10 +6,18 @@ import {
   Input,
   Button,
   Tag,
-  notification,
-  Pagination
+  Pagination,
+  Modal
 } from "antd";
-import { getArticleList, goToRegister, goToLogin, getUserInfo, userLogout } from "../../actions/index";
+import {
+  getArticleList,
+  delArticle,
+
+  goToRegister,
+  goToLogin,
+  getUserInfo,
+  userLogout
+} from "../../actions/index";
 import { formatTime } from '../../utils/index';
 //引入公共组件
 import Header from "../common/Header/Header"
@@ -18,12 +26,11 @@ const FormItem = Form.Item;
 
 @connect(state => ({
   articleList: state.article.articleList,
-  registerRes: state.user.registerRes,
-  loginRes: state.user.loginRes,
   userInfo: state.user.userInfo,
-  logoutRes: state.user.logoutRes
 }), {
     getArticleList,
+    delArticle,
+ 
     goToRegister,
     goToLogin,
     getUserInfo,
@@ -45,15 +52,16 @@ class Home extends Component {
         phoneNumber: '',//手机号
         password: '',//密码
       },
+      visible: false,
       warning: {},
-      list: []
+      list: [],
     }
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount() {
-    this.getData();
     this.props.getUserInfo();
+    this.getData();
     document.body.addEventListener('scroll', this.handleScroll);
   }
 
@@ -70,81 +78,23 @@ class Home extends Component {
     }
   }
 
-  componentWillUnmount() {
-    document.body.removeEventListener('scroll', this.handleScroll);
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { articleList, registerRes, loginRes, logoutRes } = nextProps;
-    let { loading, flag, list } = prevState;
-
+    const { articleList } = nextProps;
+    let { loading, list } = prevState;
+    loading = (loading ? false : loading);
     //文章列表
     if (Object.keys(articleList).length !== 0) {
-      loading=(loading ? false : loading);
-      list = articleList.responseData.list
+      list = articleList.list
       return {
         list,
-        loading
-      }
-    }
-
-    //注册成功通知
-    if (Object.keys(registerRes).length !== 0 && flag === false) {
-      flag = true;
-      if (notification.success({
-        message: registerRes.msg,
-        duration: 2
-      })) {
-        return {
-          flag
-        }
-      }
-    }
-
-    //登陆成功通知
-    if (Object.keys(loginRes).length !== 0) {
-      loading=(loading ? false : loading);
-      if (loginRes.success) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000)
-        notification.success({
-          message: loginRes.msg,
-          duration: 2
-        });
-      } else {
-        notification.error({
-          message: loginRes.msg,
-          duration: 2
-        });
-      }
-      return {
         loading,
-      }
-    }
-
-    //退出成功通知
-    if (Object.keys(logoutRes).length !== 0) {
-      loading=(loading ? false : loading);
-      if (logoutRes.success) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 3000)
-        notification.success({
-          message: logoutRes.msg,
-          duration: 2
-        });
-      } else {
-        notification.error({
-          message: loginRes.msg,
-          duration: 2
-        });
-      }
-      return {
-        loading,
-      }
+      };
     }
     return null;
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener('scroll', this.handleScroll);
   }
 
 
@@ -167,6 +117,20 @@ class Home extends Component {
   changePage(page) {
     this.getData(page)
   }
+
+  //退出登录弹窗，确认是否退出
+  showModal() {
+    this.setState({
+      visible: true
+    })
+  }
+
+  onOk() {
+    this.setState({
+      visible: false
+    }, this.logout())
+  }
+
   //退出登陆
   logout() {
     this.setState({
@@ -419,11 +383,24 @@ class Home extends Component {
     }
   }
 
+  //删除文章
+  deleteArticle(id) {
+    const param = {
+      _id: id
+    }
+    this.setState({
+      loading: true,
+    }, this.props.delArticle(param))
+  }
+
   render() {
-    const { warning, show, flag, current, limit, query, list } = this.state;
+    let { warning, show, flag, current, limit, query, list, visible } = this.state;
     const { username, phoneNumber, password } = query;
     const { articleList, userInfo } = this.props;
-
+    let isVisible = Object.keys(userInfo).length === 0 ? 'hidden' : 'visible';
+    const style = {
+      visibility: isVisible
+    }
     return (
       <>
         <Header />
@@ -441,15 +418,15 @@ class Home extends Component {
                     <ul>
                       <li>
                         <i className="fa fa-book" aria-hidden="true"></i>
-                        <Link to={`/article/${item.id}`}>阅读全文</Link>
+                        <Link to={`/article/${item._id}`}>阅读全文</Link>
                       </li>
+                      {/* <li>
+                        <i className="fa fa-pencil" aria-hidden="true"></i>
+                        <Link to={`/update/${item._id}`}>修改</Link>
+                      </li> */}
                       <li>
-                        <i className="fa fa-book" aria-hidden="true"></i>
-                        <Link to={`/article/${item.id}`}>修改</Link>
-                      </li>
-                      <li>
-                        <i className="fa fa-book" aria-hidden="true"></i>
-                        <Link to={`/article/${item.id}`}>删除</Link>
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                        <a href='javascript:;' onClick={() => this.deleteArticle(item._id)}>删除</a>
                       </li>
                     </ul>
                   </div>
@@ -461,8 +438,7 @@ class Home extends Component {
               simple
               defaultCurrent={current}
               defaultPageSize={limit}
-              // total={articleList.total} 
-              total={20}
+              total={articleList.total}
               onChange={(current) => this.changePage(current)}
             />
           </div>
@@ -474,10 +450,21 @@ class Home extends Component {
                   <h4>欢迎光临我的博客！</h4>
                   <p>用户名：{userInfo.data.username}</p>
                   <p>座右铭：生命不止，奋斗不惜！</p>
-                  <p><a href='javascript:;' onClick={() => this.logout()}>退出登陆</a></p>
+                  <p><a href='javascript:;' onClick={() => this.showModal()}>退出登陆</a></p>
+                  <Modal
+                    title="系统提示"
+                    visible={visible}
+                    okText='确定'
+                    maskClosable={false}
+                    cancelText='取消'
+                    onOk={() => this.onOk()}
+                    onCancel={() => this.setState({ visible: false })}
+                  >
+                    <p>您确定要退出当前系统吗？</p>
+                  </Modal>
                 </div>
                 :
-                <>
+                <div style={style}>
                   {
                     flag ?
                       <div className='login'>
@@ -601,7 +588,7 @@ class Home extends Component {
                         </Form>
                       </div>
                   }
-                </>
+                </div>
             }
 
 
