@@ -14,3 +14,11 @@ export const SEARCH_ARTICLE = 'SEARCH_ARTICLE';//搜索文章
 export const GET_ARTICLE_LIST = 'GET_ARTICLE_LIST';//获取文章列表
 export const GET_ARTICLE_DETAIL = 'GET_ARTICLE_DETAIL';//获取文章详情
 
+
+//留言
+export const LEAVE_MESSAGE = 'LEAVE_MESSAGE';//添加用户留言
+export const GET_LEAVE_MESSAGE = 'GET_LEAVE_MESSAGE';//获取用户留言
+
+
+
+

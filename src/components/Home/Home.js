@@ -504,15 +504,15 @@ class Home extends Component {
                                 href='javascript:;'
                                 className='go-register'
                                 onClick={() => this.changeFlag()}> 去注册...</a>
-                              <Link
+                              {/* <Link
                                 to='/forget'
                                 className="forgot-password"
                                 style={{ float: 'right' }}>
                                 忘记密码
-                          </Link>
+                          </Link> */}
                             </p>
                           </FormItem>
-                          <FormItem>
+                          {/* <FormItem>
                             <div className="other-login">
                               <p>第三方账号登录：</p>
                               <p>
@@ -521,7 +521,7 @@ class Home extends Component {
                                 <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
                               </p>
                             </div>
-                          </FormItem>
+                          </FormItem> */}
                         </Form>
                       </div>
                       :
@@ -575,7 +575,7 @@ class Home extends Component {
                                 onClick={() => this.changeFlag()}> 去登陆...</a>
                             </p>
                           </FormItem>
-                          <FormItem>
+                          {/* <FormItem>
                             <div className="other-login">
                               <p>第三方账号登录：</p>
                               <p>
@@ -584,7 +584,7 @@ class Home extends Component {
                                 <img title="微信" alt="微信" src="https://b-gold-cdn.xitu.io/v3/static/img/wechat.e0ff124.svg" />
                               </p>
                             </div>
-                          </FormItem>
+                          </FormItem> */}
                         </Form>
                       </div>
                   }

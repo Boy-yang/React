@@ -15,6 +15,12 @@ import {
 } from './article';
 
 
+import {
+    addLeaveMsg,
+    getLeaveMsg
+} from './leaveMsg';
+
+
 export {
     addArticle,
     delArticle,
@@ -26,7 +32,10 @@ export {
     goToLogin,
     goToRegister,
     getUserInfo,
-    userLogout
+    userLogout,
+
+    addLeaveMsg,
+    getLeaveMsg
 }
 
 

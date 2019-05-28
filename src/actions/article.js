@@ -21,6 +21,7 @@ function receiveAddArticle(json) {
 export function addArticle(params) {
     return dispatch => {
         XHR({
+            type:'post',
             url: '/api/user/addArticle',
             data: params,
             success: res => {
@@ -142,19 +143,3 @@ export function searchArticle(param) {
         })
     }
 }
-
-searchArticle
-
-
-
-
-
-
-
-
-
-
-
-
-
-
