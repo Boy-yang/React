@@ -4,7 +4,6 @@ import { Spin } from "antd";
 import { hot } from 'react-hot-loader/root'
 
 const Home = lazy( () => import( "./Home/Home.js" ) );
-const Life = lazy( () => import( "./Life/Life.js" ) );
 const User = lazy( () => import( "./User/User.js" ) );
 const Write = lazy( () => import( "./Write/Write.js" ) );
 const Update = lazy( () => import( "./Update/Update.js" ) );
@@ -23,7 +22,6 @@ class App extends Component {
         {
           [
             { path: "/", component: props => <Home { ...props } /> },
-            { path: "/life", component: props => <Life { ...props } /> },
             { path: "/user", component: props => <User { ...props } /> },
             { path: "/write", component: props => <Write { ...props } /> },
             { path: "/update/:id", component: props => <Update{ ...props } /> },

@@ -196,34 +196,6 @@
             }
         }
 
-
-        .hot-tags {
-            height: 8rem;
-            padding: .5rem .5rem 0 .5rem;
-            margin-bottom: 1rem;
-            background: #fff;
-            overflow: hidden;
-
-            .tag-header {
-                display: flex;
-                justify-content: space-between;
-
-                .watch-all {
-                    color: #007fff;
-                }
-            }
-
-            .tag-content {
-                margin-top: .5rem;
-
-                .tags {
-                    display: inline-block;
-                    margin: .4rem;
-                }
-            }
-
-        }
-
         .import {
             height: 5rem;
             padding: .5rem .5rem 0 .5rem;

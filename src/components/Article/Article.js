@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getArticleDetail } from '../../actions/index'
-import { Form} from 'antd';
+import { Form } from 'antd';
 import './Article.scss';
 const FormItem = Form.Item;
 
@@ -51,7 +51,7 @@ class Article extends Component {
     }
 
     render() {
-        let { detail} = this.state;
+        let { detail } = this.state;
         let title, content;
         if (detail.length !== 0) {
             title = detail.title;
@@ -65,8 +65,10 @@ class Article extends Component {
                     </FormItem>
                     <br></br>
                     <FormItem>
-                        <div className='detail'>{content}</div>
-                    </FormItem>  
+                        <p
+                            className='detail'
+                            dangerouslySetInnerHTML={{ __html: content }} />
+                    </FormItem>
                 </Form>
             </div>
         );

@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Input, Form } from 'antd';
 import './Header.scss';
-const FormItem = Form.Item;
 
-const Search = Input.Search;
 
 class Header extends Component {
     constructor(props) {
@@ -25,10 +22,6 @@ class Header extends Component {
                         <i className="fa fa-home" aria-hidden="true" />
                         <b>首页</b>
                     </NavLink>
-                    <NavLink to='/life' activeClassName='active'>
-                        <i className="fa fa-coffee" aria-hidden="true"></i>
-                        <b>生活</b>
-                    </NavLink>
                     <NavLink to='/user' activeClassName='active'>
                         <i className="fa fa-male" aria-hidden="true"></i>
                         <b>关于我</b>
@@ -38,13 +31,6 @@ class Header extends Component {
                         <b>留言</b>
                     </NavLink>
                 </div>
-                {/* <div className='search'>
-                    <Search
-                        placeholder="input search text"
-                        onSearch={value => this.handleSearch(value)}
-                        enterButton
-                    />
-                </div> */}
                 <div className='write'>
                     <Link to='/write'>
                         <i className="fa fa-pencil-square-o" aria-hidden="true"></i>

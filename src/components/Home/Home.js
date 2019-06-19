@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
+import htmlToDraft from 'html-to-draftjs';
 import {
   Form,
   Input,
   Button,
-  Tag,
   Pagination,
   Modal
 } from "antd";
@@ -414,7 +414,7 @@ class Home extends Component {
                   </div>
                   <div className='main'>
                     <h2>文章标题：{item.title}</h2>
-                    <p>{item.content}</p>
+                    <p dangerouslySetInnerHTML={{__html:item.content}}/>
                     <ul>
                       <li>
                         <i className="fa fa-book" aria-hidden="true"></i>
@@ -590,24 +590,6 @@ class Home extends Component {
                   }
                 </div>
             }
-
-
-            <div className='hot-tags'>
-              <div className='tag-header'>
-                <h4>热门标签</h4>
-                <a href='#' className='watch-all'>查看全部</a>
-              </div>
-              <div className='tag-content'>
-                <a href='#' className='tags'><Tag color="magenta">前端</Tag></a>
-                <a href='#' className='tags'><Tag color="green">JavaScript</Tag></a>
-                <a href='#' className='tags'><Tag color="blue">Node</Tag></a>
-                <a href='#' className='tags'><Tag color="purple">后端</Tag></a>
-                <a href='#' className='tags'><Tag color="orange">全栈</Tag></a>
-                <a href='#' className='tags'><Tag color="gold">Python</Tag></a>
-                <a href='#' className='tags'><Tag color="cyan">系统架构</Tag></a>
-                <a href='#' className='tags'><Tag color="volcano">人工智能</Tag></a>
-              </div>
-            </div>
           </div>
         </div >
         {
