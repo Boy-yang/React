@@ -6,13 +6,10 @@ import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import draftToMarkdown from 'draftjs-to-markdown';
-
-
 import { getUserInfo, addArticle } from "../../actions/index";
 import './Write.scss'
 const FormItem = Form.Item;
 const { TextArea } = Input;
-
 const content = {
     "entityMap": {},
     "blocks": [{
