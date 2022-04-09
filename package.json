@@ -50,7 +50,7 @@
     "draftjs-to-html": "^0.8.4",
     "draftjs-to-markdown": "^0.5.1",
     "html-to-draftjs": "^1.4.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^6.0.1",
